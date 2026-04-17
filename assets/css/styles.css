@@ -12837,65 +12837,152 @@ button.btn {
 }
 
 /* =========================
-   GLASSMORPHISM - CONTACT CARDS
+   CONTACT CARD VARIANTS
+   Switch active style by changing the class on .contact-section:
+   1. contact-variant-premium-dark
+   2. contact-variant-minimal-elegante
+   3. contact-variant-tech-neon
    ========================= */
 
-.contact-section .card {
-  background: rgba(255, 255, 255, 0.14) !important;
-  border: 1px solid rgba(255, 255, 255, 0.16) !important;
-  border-radius: 1.4rem;
-  box-shadow:
-    0 10px 30px rgba(0, 0, 0, 0.18),
-    inset 0 1px 0 rgba(255, 255, 255, 0.08);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
-  overflow: hidden;
-}
-
-.contact-section .card-body {
-  background: linear-gradient(
-    180deg,
-    rgba(255, 255, 255, 0.10) 0%,
-    rgba(255, 255, 255, 0.04) 100%
-  );
-  border-radius: 1.4rem;
-}
-
-.contact-section .card h4,
-.contact-section .card .small,
-.contact-section .card a {
-  color: #f5f5f5 !important;
-}
-
-.contact-section .card hr {
-  border-color: rgba(255, 255, 255, 0.22);
-  opacity: 1;
-}
-
-.contact-section .card i {
-  color: #7fd1cb !important;
-}
-
-.contact-section .card:hover {
-  transform: translateY(-4px);
-  transition: all 0.28s ease;
-  box-shadow:
-    0 16px 38px rgba(0, 0, 0, 0.24),
-    0 0 20px rgba(100, 161, 157, 0.12);
-}
-
-.contact-section {
+.contact-section[class*="contact-variant-"] {
   background: transparent !important;
 }
 
-.contact-section::before {
+.contact-section[class*="contact-variant-"]::before {
   content: "";
   position: absolute;
   inset: 0;
-  background: linear-gradient(
-    180deg,
-    rgba(255, 255, 255, 0.02) 0%,
-    rgba(255, 255, 255, 0.00) 100%
-  );
   pointer-events: none;
+}
+
+.contact-section[class*="contact-variant-"] .card {
+  border-radius: 1.4rem;
+  overflow: hidden;
+  transition: transform 0.28s ease, box-shadow 0.28s ease, border-color 0.28s ease, background 0.28s ease;
+}
+
+.contact-section[class*="contact-variant-"] .card-body {
+  border-radius: 1.4rem;
+}
+
+.contact-section[class*="contact-variant-"] .card:hover {
+  transform: translateY(-4px);
+}
+
+/* 1. PREMIUM DARK */
+.contact-section.contact-variant-premium-dark::before {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.02) 0%, rgba(255, 255, 255, 0) 100%);
+}
+
+.contact-section.contact-variant-premium-dark .card {
+  background: linear-gradient(180deg, rgba(20, 20, 20, 0.94) 0%, rgba(11, 11, 11, 0.92) 100%) !important;
+  border: 1px solid rgba(127, 209, 203, 0.18) !important;
+  box-shadow:
+    0 16px 32px rgba(0, 0, 0, 0.24),
+    inset 0 1px 0 rgba(255, 255, 255, 0.04);
+}
+
+.contact-section.contact-variant-premium-dark .card-body {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.03) 0%, rgba(255, 255, 255, 0.01) 100%);
+}
+
+.contact-section.contact-variant-premium-dark .card h4,
+.contact-section.contact-variant-premium-dark .card .small,
+.contact-section.contact-variant-premium-dark .card a {
+  color: #f3f5f5 !important;
+}
+
+.contact-section.contact-variant-premium-dark .card hr {
+  border-color: rgba(127, 209, 203, 0.18);
+  opacity: 1;
+}
+
+.contact-section.contact-variant-premium-dark .card i {
+  color: #7fd1cb !important;
+}
+
+.contact-section.contact-variant-premium-dark .card:hover {
+  box-shadow:
+    0 20px 42px rgba(0, 0, 0, 0.3),
+    0 0 0 1px rgba(127, 209, 203, 0.1);
+}
+
+/* 2. MINIMAL ELEGANTE */
+.contact-section.contact-variant-minimal-elegante::before {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.015) 0%, rgba(255, 255, 255, 0) 100%);
+}
+
+.contact-section.contact-variant-minimal-elegante .card {
+  background: linear-gradient(180deg, rgba(248, 248, 248, 0.96) 0%, rgba(234, 234, 234, 0.92) 100%) !important;
+  border: 1px solid rgba(255, 255, 255, 0.55) !important;
+  box-shadow:
+    0 14px 30px rgba(0, 0, 0, 0.12),
+    0 1px 0 rgba(255, 255, 255, 0.65) inset;
+}
+
+.contact-section.contact-variant-minimal-elegante .card-body {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.4) 0%, rgba(255, 255, 255, 0.12) 100%);
+}
+
+.contact-section.contact-variant-minimal-elegante .card h4,
+.contact-section.contact-variant-minimal-elegante .card .small,
+.contact-section.contact-variant-minimal-elegante .card a {
+  color: #171717 !important;
+}
+
+.contact-section.contact-variant-minimal-elegante .card hr {
+  border-color: rgba(100, 161, 157, 0.22);
+  opacity: 1;
+}
+
+.contact-section.contact-variant-minimal-elegante .card i {
+  color: #5b908c !important;
+}
+
+.contact-section.contact-variant-minimal-elegante .card:hover {
+  box-shadow:
+    0 18px 36px rgba(0, 0, 0, 0.16),
+    0 0 0 1px rgba(100, 161, 157, 0.08);
+}
+
+/* 3. TECH NEON SUAVE */
+.contact-section.contact-variant-tech-neon::before {
+  background:
+    radial-gradient(circle at top, rgba(114, 236, 255, 0.08) 0%, rgba(114, 236, 255, 0) 35%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.02) 0%, rgba(255, 255, 255, 0) 100%);
+}
+
+.contact-section.contact-variant-tech-neon .card {
+  background: linear-gradient(180deg, rgba(12, 16, 18, 0.94) 0%, rgba(7, 10, 12, 0.94) 100%) !important;
+  border: 1px solid rgba(114, 236, 255, 0.22) !important;
+  box-shadow:
+    0 18px 38px rgba(0, 0, 0, 0.26),
+    0 0 0 1px rgba(114, 236, 255, 0.05),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+.contact-section.contact-variant-tech-neon .card-body {
+  background: linear-gradient(180deg, rgba(114, 236, 255, 0.05) 0%, rgba(160, 255, 214, 0.02) 100%);
+}
+
+.contact-section.contact-variant-tech-neon .card h4,
+.contact-section.contact-variant-tech-neon .card .small,
+.contact-section.contact-variant-tech-neon .card a {
+  color: #eefefe !important;
+}
+
+.contact-section.contact-variant-tech-neon .card hr {
+  border-color: rgba(114, 236, 255, 0.28);
+  opacity: 1;
+}
+
+.contact-section.contact-variant-tech-neon .card i {
+  color: #72ecff !important;
+  text-shadow: 0 0 12px rgba(114, 236, 255, 0.26);
+}
+
+.contact-section.contact-variant-tech-neon .card:hover {
+  box-shadow:
+    0 22px 44px rgba(0, 0, 0, 0.32),
+    0 0 18px rgba(114, 236, 255, 0.12);
 }

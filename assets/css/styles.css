@@ -11920,10 +11920,12 @@ body.page-fade-out {
 #mainNav.navbar-shrink .nav-pill-container {
   width: auto;
   max-width: 760px;
-  padding: 0.6rem 1.18rem;
-  background: rgba(255, 255, 255, 0.10);
-  border: 1px solid rgba(255, 255, 255, 0.18);
-  box-shadow: 0 16px 42px rgba(0, 0, 0, 0.2);
+  padding: 0.58rem 1.2rem;
+  background: rgba(18, 18, 18, 0.62);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: 0 14px 40px rgba(0, 0, 0, 0.28);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
 }
 
 #mainNav.navbar-shrink .nav-logo {
@@ -11931,16 +11933,18 @@ body.page-fade-out {
 }
 
 #mainNav.navbar-shrink .nav-link {
-  color: rgba(255, 255, 255, 0.96) !important;
+  color: rgba(255, 255, 255, 0.96);
 }
 
-#mainNav.navbar-shrink .nav-link:hover,
-#mainNav.navbar-shrink .nav-link:focus {
-  background: rgba(255, 255, 255, 0.1);
+#mainNav.navbar-shrink .nav-link:hover {
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.12);
 }
 
 #mainNav.navbar-shrink .nav-link.active {
-  background: rgba(255, 255, 255, 0.16);
+  color: #ffffff;
+  background: rgba(100, 161, 157, 0.28);
+  box-shadow: inset 0 0 0 1px rgba(100, 161, 157, 0.2);
 }
 
 .masthead {
@@ -12434,4 +12438,105 @@ body.page-fade-out {
   .tooltip-text {
     display: none;
   }
+}
+/* =========================
+   CTA BUTTONS - MODERN UI
+   ========================= */
+
+.btn {
+  border-radius: 999px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  transition: all 0.28s ease;
+}
+
+.btn-primary {
+  color: #ffffff;
+  border: 1px solid rgba(100, 161, 157, 0.45);
+  background: linear-gradient(135deg, rgba(100, 161, 157, 0.95) 0%, rgba(77, 124, 121, 0.95) 100%);
+  box-shadow:
+    0 10px 24px rgba(100, 161, 157, 0.18),
+    inset 0 1px 0 rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.btn-primary:hover {
+  color: #ffffff;
+  transform: translateY(-2px);
+  border-color: rgba(130, 201, 196, 0.55);
+  background: linear-gradient(135deg, rgba(115, 179, 175, 0.98) 0%, rgba(82, 133, 129, 0.98) 100%);
+  box-shadow:
+    0 16px 34px rgba(100, 161, 157, 0.26),
+    0 0 20px rgba(100, 161, 157, 0.12);
+}
+
+.btn-primary:focus,
+.btn-primary:active {
+  color: #ffffff !important;
+  background: linear-gradient(135deg, rgba(95, 153, 149, 0.98) 0%, rgba(70, 114, 111, 0.98) 100%) !important;
+  border-color: rgba(100, 161, 157, 0.6) !important;
+  box-shadow:
+    0 0 0 0.2rem rgba(100, 161, 157, 0.18),
+    0 12px 28px rgba(100, 161, 157, 0.2) !important;
+}
+
+.masthead .btn,
+.signup-section .btn,
+.projects-section .btn {
+  min-width: 190px;
+  padding: 1rem 1.6rem;
+  font-size: 0.78rem;
+}
+
+@media (max-width: 767.98px) {
+  .masthead .btn,
+  .signup-section .btn,
+  .projects-section .btn {
+    min-width: 160px;
+    padding: 0.9rem 1.2rem;
+    font-size: 0.72rem;
+  }
+}
+/* =========================
+   CONTACT SECTION UX
+   ========================= */
+
+.contact-section {
+  position: relative;
+  padding-top: 7rem;
+  padding-bottom: 5rem;
+}
+
+.contact-section::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(180deg, rgba(0, 0, 0, 0.08) 0%, rgba(20, 20, 20, 0.18) 100%);
+  pointer-events: none;
+}
+
+.contact-section .container {
+  position: relative;
+  z-index: 1;
+}
+
+.contact-section .card {
+  border-radius: 1.4rem;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.9) 0%, rgba(243, 243, 243, 0.84) 100%);
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.14);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+.contact-section .card-body {
+  border-radius: 1.4rem;
+}
+
+.contact-section .small,
+.contact-section h4 {
+  color: #111111;
 }

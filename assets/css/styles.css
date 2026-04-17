@@ -14086,4 +14086,124 @@ header.masthead.lanzah-hero,
     font-size: 0.95rem !important;
   }
 }
+/* =========================================================
+   HERO - TRANSICION OSCURA + TEXTO
+   ========================================================= */
 
+/* Mantener fondo unico */
+#hero.lanzah-hero .lanzah-hero-stage::before,
+.lanzah-hero .lanzah-hero-stage::before {
+  content: "" !important;
+  position: absolute !important;
+  inset: 0 !important;
+  z-index: 1 !important;
+  background: url("../img/fondo.jpg") center center / cover no-repeat !important;
+  transform: scale(1.02) !important;
+}
+
+/* Quitar la sombra global fija */
+#hero.lanzah-hero .lanzah-hero-stage::after,
+.lanzah-hero .lanzah-hero-stage::after {
+  display: none !important;
+}
+
+/* Cada panel maneja su propio oscurecimiento */
+#hero .lanzah-hero-panel {
+  position: absolute !important;
+  inset: 0 !important;
+  z-index: 3 !important;
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+  transition: opacity 0.8s ease, visibility 0.8s ease !important;
+}
+
+#hero .lanzah-hero-panel.is-active,
+#hero .lanzah-hero-panel.is-entering {
+  opacity: 1 !important;
+  visibility: visible !important;
+  pointer-events: auto !important;
+}
+
+#hero .lanzah-panel-shade {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  opacity: 0;
+  transition: opacity 0.8s ease, transform 0.8s ease;
+  transform: scale(1.02);
+  background: radial-gradient(
+      ellipse at center,
+      rgba(255, 255, 255, 0.04) 0%,
+      rgba(0, 0, 0, 0.08) 36%,
+      rgba(0, 0, 0, 0.34) 68%,
+      rgba(0, 0, 0, 0.62) 100%
+    ),
+    linear-gradient(
+      180deg,
+      rgba(0, 0, 0, 0.10) 0%,
+      rgba(0, 0, 0, 0.20) 40%,
+      rgba(0, 0, 0, 0.52) 100%
+    );
+}
+
+#hero .lanzah-hero-panel.is-active .lanzah-panel-shade,
+#hero .lanzah-hero-panel.is-entering .lanzah-panel-shade {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* Contenido arriba de la sombra */
+#hero .lanzah-hero-content {
+  position: relative !important;
+  z-index: 2 !important;
+  min-height: 100svh !important;
+  width: min(92vw, 1100px) !important;
+  margin: 0 auto !important;
+  padding: 7rem 1rem 5.5rem !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  text-align: center !important;
+}
+
+/* Animacion del texto */
+#hero .hero-title,
+#hero .hero-subtitle,
+#hero .lanzah-hero-content .btn {
+  opacity: 0;
+  transform: translateY(18px);
+  filter: blur(10px);
+  transition:
+    opacity 0.75s ease,
+    transform 0.75s ease,
+    filter 0.75s ease;
+}
+
+#hero .lanzah-hero-panel.is-active .hero-title,
+#hero .lanzah-hero-panel.is-active .hero-subtitle,
+#hero .lanzah-hero-panel.is-active .btn,
+#hero .lanzah-hero-panel.is-entering .hero-title,
+#hero .lanzah-hero-panel.is-entering .hero-subtitle,
+#hero .lanzah-hero-panel.is-entering .btn {
+  opacity: 1;
+  transform: translateY(0);
+  filter: blur(0);
+}
+
+/* Delays bonitos */
+#hero .lanzah-hero-panel.is-active .hero-title,
+#hero .lanzah-hero-panel.is-entering .hero-title {
+  transition-delay: 0.08s;
+}
+
+#hero .lanzah-hero-panel.is-active .hero-subtitle,
+#hero .lanzah-hero-panel.is-entering .hero-subtitle {
+  transition-delay: 0.18s;
+}
+
+#hero .lanzah-hero-panel.is-active .btn,
+#hero .lanzah-hero-panel.is-entering .btn {
+  transition-delay: 0.28s;
+}

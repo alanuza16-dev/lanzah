@@ -13157,7 +13157,22 @@ button.btn {
    ========================================================== */
 
 #heroCarousel.carousel-fade .carousel-item {
+  opacity: 0 !important;
   transition: opacity 1.05s ease-in-out !important;
+}
+
+#heroCarousel.carousel-fade .carousel-item.active {
+  opacity: 1 !important;
+}
+
+#heroCarousel.carousel-fade .carousel-item-next.carousel-item-start,
+#heroCarousel.carousel-fade .carousel-item-prev.carousel-item-end {
+  opacity: 1 !important;
+}
+
+#heroCarousel.carousel-fade .active.carousel-item-start,
+#heroCarousel.carousel-fade .active.carousel-item-end {
+  opacity: 0 !important;
 }
 
 #heroCarousel .hero-slide::before {

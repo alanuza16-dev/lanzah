@@ -13032,3 +13032,44 @@ button.btn {
     0 0 18px rgba(127, 209, 203, 0.08),
     0 0 0 1px rgba(255, 255, 255, 0.06);
 }
+/* =========================
+   FIX TEXTO MODALES
+   ========================= */
+
+   .modal {
+    background: rgba(0, 0, 0, 0.72);
+  }
+  
+  .modal-content {
+    background: rgba(255, 255, 255, 0.96);
+    color: #111111;
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    border-radius: 1.4rem;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.28);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+  }
+  
+  .modal-content h2 {
+    color: #111111 !important;
+  }
+  
+  .modal-content p {
+    color: #2a2a2a !important;
+    font-size: 1rem;
+    line-height: 1.7;
+  }
+  
+  .modal-content .close {
+    color: #111111 !important;
+    opacity: 1;
+  }
+  
+  .modal-content .close:hover {
+    color: #64a19d !important;
+  }
+  
+  .modal-content img {
+    border-radius: 1rem;
+    margin: 1rem 0 1.25rem 0;
+  }

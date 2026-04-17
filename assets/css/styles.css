@@ -13338,4 +13338,159 @@ button.btn {
     bottom: 1.2rem;
   }
 }
+/* =========================
+   HERO FIX - FONDO + FLECHAS
+   ========================= */
+
+   .lanzah-hero {
+    position: relative;
+    min-height: 100vh;
+    overflow: hidden;
+  }
   
+  .lanzah-hero-stage {
+    position: relative;
+    min-height: 100vh;
+  }
+  
+  .lanzah-hero-panel {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.7s ease, visibility 0.7s ease;
+  }
+  
+  .lanzah-hero-panel.is-active {
+    opacity: 1;
+    visibility: visible;
+    z-index: 2;
+  }
+  
+  .lanzah-hero-media {
+    position: absolute;
+    inset: 0;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    z-index: 1;
+  }
+  
+  /* Reemplaza los nombres si tus archivos reales tienen otro nombre */
+  .lanzah-hero-media.slide-1 {
+    background-image: url("../img/fondo.jpg");
+  }
+  
+  .lanzah-hero-media.slide-2 {
+    background-image: url("../img/web.png");
+  }
+  
+  .lanzah-hero-media.slide-3 {
+    background-image: url("../img/redes.jpg");
+  }
+  
+  .lanzah-hero-shadow {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    background: linear-gradient(
+      180deg,
+      rgba(0, 0, 0, 0.28) 0%,
+      rgba(0, 0, 0, 0.42) 55%,
+      rgba(0, 0, 0, 0.58) 100%
+    );
+  }
+  
+  .lanzah-hero-content {
+    position: relative;
+    z-index: 3;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 7rem 1rem 6rem 1rem;
+  }
+  
+  .lanzah-hero-controls {
+    position: absolute;
+    inset: 0;
+    z-index: 4;
+    pointer-events: none;
+  }
+  
+  .lanzah-hero-arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 52px;
+    height: 52px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    background: rgba(0, 0, 0, 0.28);
+    color: #ffffff;
+    font-size: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    pointer-events: auto;
+    transition: all 0.25s ease;
+  }
+  
+  .lanzah-hero-arrow:hover {
+    background: rgba(100, 161, 157, 0.22);
+    border-color: rgba(100, 161, 157, 0.45);
+  }
+  
+  .lanzah-hero-arrow[data-direction="prev"] {
+    left: 24px;
+  }
+  
+  .lanzah-hero-arrow[data-direction="next"] {
+    right: 24px;
+  }
+  
+  .lanzah-hero-dots {
+    position: absolute;
+    left: 50%;
+    bottom: 28px;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 0.65rem;
+    pointer-events: auto;
+  }
+  
+  .lanzah-hero-dots button {
+    width: 11px;
+    height: 11px;
+    border-radius: 50%;
+    border: none;
+    background: rgba(255, 255, 255, 0.38);
+    cursor: pointer;
+    transition: all 0.25s ease;
+  }
+  
+  .lanzah-hero-dots button.is-active {
+    background: #64a19d;
+    box-shadow: 0 0 0 6px rgba(100, 161, 157, 0.14);
+  }
+  
+  @media (max-width: 767.98px) {
+    .lanzah-hero-arrow {
+      width: 42px;
+      height: 42px;
+      font-size: 1.6rem;
+    }
+  
+    .lanzah-hero-arrow[data-direction="prev"] {
+      left: 12px;
+    }
+  
+    .lanzah-hero-arrow[data-direction="next"] {
+      right: 12px;
+    }
+  }

@@ -13190,7 +13190,7 @@ button.btn {
 #heroCarousel.carousel-fade .carousel-item-prev.carousel-item-end .hero-slide,
 #heroCarousel.carousel-fade .active.carousel-item-start .hero-slide,
 #heroCarousel.carousel-fade .active.carousel-item-end .hero-slide {
-  filter: brightness(0.78);
+  filter: brightness(0.5);
 }
 
 @keyframes lanzahHeroPulse {

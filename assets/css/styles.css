@@ -14207,3 +14207,10 @@ header.masthead.lanzah-hero,
 #hero .lanzah-hero-panel.is-entering .btn {
   transition-delay: 0.28s;
 }
+#hero .hero-subtitle {
+  margin-bottom: 1.8rem !important;
+}
+
+#hero .lanzah-hero-content .btn {
+  margin-top: 2.2rem !important;
+}

@@ -13780,3 +13780,310 @@ button.btn {
     font-size: 0.95rem !important;
   }
 }
+/* =========================================================
+   HERO OVERRIDE FINAL - PEGAR AL FINAL DEL CSS
+   Fuerza: 1 fondo único + gradiente en títulos + sin mini mensajes
+   ========================================================= */
+
+/* HERO BASE */
+header.masthead.lanzah-hero,
+.masthead.lanzah-hero {
+  position: relative !important;
+  min-height: 100svh !important;
+  height: 100svh !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+  background: #000 !important;
+}
+
+#hero.lanzah-hero .lanzah-hero-stage,
+.lanzah-hero .lanzah-hero-stage {
+  position: relative !important;
+  min-height: 100svh !important;
+  height: 100svh !important;
+  isolation: isolate !important;
+  background: transparent !important;
+}
+
+/* UN SOLO FONDO */
+#hero.lanzah-hero .lanzah-hero-stage::before,
+.lanzah-hero .lanzah-hero-stage::before {
+  content: "" !important;
+  position: absolute !important;
+  inset: 0 !important;
+  z-index: 1 !important;
+  background: url("../img/fondo.jpg") center center / cover no-repeat !important;
+  transform: scale(1.02) !important;
+}
+
+#hero.lanzah-hero .lanzah-hero-stage::after,
+.lanzah-hero .lanzah-hero-stage::after {
+  content: "" !important;
+  position: absolute !important;
+  inset: 0 !important;
+  z-index: 2 !important;
+  background: linear-gradient(
+    180deg,
+    rgba(0, 0, 0, 0.16) 0%,
+    rgba(0, 0, 0, 0.30) 46%,
+    rgba(0, 0, 0, 0.58) 100%
+  ) !important;
+}
+
+/* MATA CUALQUIER FONDO/IMAGEN VIEJA DEL HERO */
+#hero .lanzah-hero-media,
+#hero .lanzah-hero-media.slide-1,
+#hero .lanzah-hero-media.slide-2,
+#hero .lanzah-hero-media.slide-3,
+#hero .hero-slide,
+#hero .hero-slide::before,
+#hero .hero-slide::after,
+#hero .slide-1,
+#hero .slide-2,
+#hero .slide-3 {
+  display: none !important;
+  background: none !important;
+  background-image: none !important;
+  opacity: 0 !important;
+  visibility: hidden !important;
+}
+
+/* OCULTA LOS MINI MENSAJES */
+#hero .lanzah-hero-kicker {
+  display: none !important;
+}
+
+/* PANELS SOLO PARA TEXTO */
+#hero .lanzah-hero-panel {
+  position: absolute !important;
+  inset: 0 !important;
+  z-index: 3 !important;
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+  background: transparent !important;
+  transition: opacity 0.65s ease, visibility 0.65s ease !important;
+}
+
+#hero .lanzah-hero-panel.is-active,
+#hero .lanzah-hero-panel.is-entering {
+  opacity: 1 !important;
+  visibility: visible !important;
+  pointer-events: auto !important;
+}
+
+#hero .lanzah-hero-panel.is-exiting {
+  opacity: 0 !important;
+  visibility: hidden !important;
+}
+
+/* CONTENIDO */
+#hero .lanzah-hero-content {
+  position: relative !important;
+  z-index: 4 !important;
+  min-height: 100svh !important;
+  width: min(92vw, 1100px) !important;
+  margin: 0 auto !important;
+  padding: 7rem 1rem 5.5rem !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  text-align: center !important;
+  background: transparent !important;
+}
+
+/* TITULOS CON GRADIENTE */
+#hero .hero-title,
+#hero .lanzah-hero-content h1,
+#hero.masthead h1 {
+  max-width: min(92vw, 1000px) !important;
+  margin: 0 auto !important;
+  font-family: "Varela Round", sans-serif !important;
+  font-size: clamp(3rem, 7vw, 7rem) !important;
+  line-height: 0.98 !important;
+  letter-spacing: clamp(0.08rem, 0.45vw, 0.30rem) !important;
+  white-space: normal !important;
+  word-break: normal !important;
+  overflow-wrap: anywhere !important;
+  color: transparent !important;
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.98) 0%,
+    rgba(225, 225, 225, 0.94) 40%,
+    rgba(124, 124, 124, 0.74) 74%,
+    rgba(15, 15, 15, 0.30) 100%
+  ) !important;
+  -webkit-background-clip: text !important;
+  background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+  text-shadow: none !important;
+}
+
+/* SUBTITULO */
+#hero .hero-subtitle,
+#hero .lanzah-hero-content h2,
+#hero.masthead h2 {
+  width: min(90vw, 760px) !important;
+  max-width: min(90vw, 760px) !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+  font-size: clamp(1rem, 2vw, 1.3rem) !important;
+  line-height: 1.55 !important;
+  letter-spacing: 0.01em !important;
+  color: rgba(255, 255, 255, 0.86) !important;
+}
+
+/* CONTROLES */
+#hero .lanzah-hero-controls {
+  position: absolute !important;
+  inset: 0 !important;
+  z-index: 5 !important;
+  pointer-events: none !important;
+}
+
+/* FLECHAS */
+#hero .lanzah-hero-arrow {
+  position: absolute !important;
+  top: 50% !important;
+  transform: translateY(-50%) !important;
+  width: 52px !important;
+  height: 52px !important;
+  min-width: 52px !important;
+  min-height: 52px !important;
+  padding: 0 !important;
+  border-radius: 999px !important;
+  border: 1px solid rgba(255, 255, 255, 0.22) !important;
+  background: rgba(0, 0, 0, 0.30) !important;
+  color: #fff !important;
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.18) !important;
+  backdrop-filter: blur(10px) !important;
+  -webkit-backdrop-filter: blur(10px) !important;
+  pointer-events: auto !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  cursor: pointer !important;
+  transition: all 0.25s ease !important;
+}
+
+#hero .lanzah-hero-arrow span {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 100% !important;
+  height: 100% !important;
+  font-size: 2rem !important;
+  line-height: 1 !important;
+  transform: translateY(-1px) !important;
+  color: #fff !important;
+}
+
+#hero .lanzah-hero-arrow:hover {
+  background: rgba(100, 161, 157, 0.24) !important;
+  border-color: rgba(100, 161, 157, 0.42) !important;
+}
+
+#hero .lanzah-hero-arrow[data-direction="prev"] {
+  left: 1.5rem !important;
+}
+
+#hero .lanzah-hero-arrow[data-direction="next"] {
+  right: 1.5rem !important;
+}
+
+/* DOTS */
+#hero .lanzah-hero-dots {
+  position: absolute !important;
+  left: 50% !important;
+  bottom: 1.6rem !important;
+  transform: translateX(-50%) !important;
+  display: flex !important;
+  gap: 0.7rem !important;
+  pointer-events: auto !important;
+  z-index: 6 !important;
+}
+
+#hero .lanzah-hero-dots button {
+  width: 36px !important;
+  height: 4px !important;
+  border: 0 !important;
+  border-radius: 999px !important;
+  background: rgba(255, 255, 255, 0.32) !important;
+  padding: 0 !important;
+  cursor: pointer !important;
+  transition: all 0.25s ease !important;
+}
+
+#hero .lanzah-hero-dots button.is-active {
+  background: #ffffff !important;
+  box-shadow: 0 0 0 6px rgba(255, 255, 255, 0.08) !important;
+}
+
+/* RESPONSIVE */
+@media (max-width: 991.98px) {
+  #hero .lanzah-hero-content {
+    padding: 6.5rem 1rem 4.8rem !important;
+    width: min(94vw, 900px) !important;
+  }
+
+  #hero .hero-title,
+  #hero .lanzah-hero-content h1,
+  #hero.masthead h1 {
+    font-size: clamp(2.25rem, 8vw, 5rem) !important;
+    letter-spacing: clamp(0.04rem, 0.35vw, 0.18rem) !important;
+  }
+
+  #hero .hero-subtitle,
+  #hero .lanzah-hero-content h2,
+  #hero.masthead h2 {
+    font-size: clamp(0.95rem, 2.4vw, 1.1rem) !important;
+    width: min(92vw, 620px) !important;
+  }
+}
+
+@media (max-width: 767.98px) {
+  #hero .lanzah-hero-arrow {
+    width: 42px !important;
+    height: 42px !important;
+    min-width: 42px !important;
+    min-height: 42px !important;
+  }
+
+  #hero .lanzah-hero-arrow span {
+    font-size: 1.55rem !important;
+  }
+
+  #hero .lanzah-hero-arrow[data-direction="prev"] {
+    left: 0.75rem !important;
+  }
+
+  #hero .lanzah-hero-arrow[data-direction="next"] {
+    right: 0.75rem !important;
+  }
+
+  #hero .lanzah-hero-dots {
+    bottom: 1.15rem !important;
+  }
+
+  #hero .lanzah-hero-dots button {
+    width: 26px !important;
+  }
+
+  #hero .lanzah-hero-content {
+    padding: 6rem 1rem 4.5rem !important;
+  }
+
+  #hero .hero-title,
+  #hero .lanzah-hero-content h1,
+  #hero.masthead h1 {
+    font-size: clamp(2rem, 10vw, 3.8rem) !important;
+  }
+
+  #hero .hero-subtitle,
+  #hero .lanzah-hero-content h2,
+  #hero.masthead h2 {
+    font-size: 0.95rem !important;
+  }
+}
+

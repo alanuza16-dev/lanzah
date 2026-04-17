@@ -13050,14 +13050,14 @@ button.btn {
   /* CONTENEDOR */
   .modal-content {
     position: relative;
-    background: rgba(255, 255, 255, 0.96);
-    color: #111111;
+    background: linear-gradient(180deg, #15110e 0%, #0e0b09 100%);
+    color: #f6efe5;
     margin: 4vh auto;
     padding: 2rem;
     width: min(92%, 780px);
     border-radius: 1.4rem;
-    border: 1px solid rgba(255,255,255,0.2);
-    box-shadow: 0 20px 50px rgba(0,0,0,0.28);
+    border: 1px solid rgba(185, 150, 91, 0.2);
+    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.32);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
     text-align: center;
@@ -13065,25 +13065,39 @@ button.btn {
   
   /* TITULO */
   .modal-content h2 {
-    color: #111111 !important;
+    color: #fff7eb !important;
     margin-bottom: 1rem;
   }
   
   /* TEXTO */
   .modal-content p {
-    color: #2a2a2a !important;
+    color: rgba(242, 227, 200, 0.8) !important;
     font-size: 1rem;
     line-height: 1.7;
   }
   
-  /* IMAGEN CENTRADA CORRECTAMENTE */
+  /* IMAGENES ESTANDARIZADAS EN CATALOGO */
+  .catalogo .item img {
+    width: 100%;
+    aspect-ratio: 4 / 5;
+    object-fit: cover;
+    object-position: center;
+    border-radius: 14px;
+  }
+
+  /* IMAGEN CENTRADA Y ESTANDARIZADA EN MODAL */
   .modal-content img {
     display: block;
     margin: 1.5rem auto;
+    width: min(100%, 420px);
     max-width: 100%;
-    width: auto;
+    aspect-ratio: 4 / 5;
+    object-fit: cover;
+    object-position: center;
     height: auto;
     border-radius: 1rem;
+    border: 1px solid rgba(185, 150, 91, 0.18);
+    box-shadow: 0 18px 32px rgba(0, 0, 0, 0.24);
   }
   
   /* BOTON CERRAR (X) */
@@ -13093,7 +13107,7 @@ button.btn {
     right: 14px;
     font-size: 1.8rem;
     font-weight: 600;
-    color: #111111 !important;
+    color: #fff7eb !important;
     background: transparent !important;
     border: none;
     cursor: pointer;
@@ -13108,7 +13122,7 @@ button.btn {
   
   /* HOVER */
   .close:hover {
-    color: #64a19d !important;
+    color: #d9bd88 !important;
   }
   
   /* RESPONSIVE */

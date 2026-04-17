@@ -13032,44 +13032,93 @@ button.btn {
     0 0 18px rgba(127, 209, 203, 0.08),
     0 0 0 1px rgba(255, 255, 255, 0.06);
 }
+
 /* =========================
-   FIX TEXTO MODALES
+   MODAL FIX FINAL
    ========================= */
 
    .modal {
-    background: rgba(0, 0, 0, 0.72);
+    display: none;
+    position: fixed;
+    z-index: 99999;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.75);
+    padding: 1.5rem;
+    overflow-y: auto;
   }
   
+  /* CONTENEDOR */
   .modal-content {
+    position: relative;
     background: rgba(255, 255, 255, 0.96);
     color: #111111;
-    border: 1px solid rgba(255, 255, 255, 0.18);
+    margin: 4vh auto;
+    padding: 2rem;
+    width: min(92%, 780px);
     border-radius: 1.4rem;
-    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.28);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255,255,255,0.2);
+    box-shadow: 0 20px 50px rgba(0,0,0,0.28);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    text-align: center;
   }
   
+  /* TITULO */
   .modal-content h2 {
     color: #111111 !important;
+    margin-bottom: 1rem;
   }
   
+  /* TEXTO */
   .modal-content p {
     color: #2a2a2a !important;
     font-size: 1rem;
     line-height: 1.7;
   }
   
-  .modal-content .close {
-    color: #111111 !important;
-    opacity: 1;
+  /* IMAGEN CENTRADA CORRECTAMENTE */
+  .modal-content img {
+    display: block;
+    margin: 1.5rem auto;
+    max-width: 100%;
+    width: auto;
+    height: auto;
+    border-radius: 1rem;
   }
   
-  .modal-content .close:hover {
+  /* BOTON CERRAR (X) */
+  .close {
+    position: absolute;
+    top: 12px;
+    right: 14px;
+    font-size: 1.8rem;
+    font-weight: 600;
+    color: #111111 !important;
+    background: transparent !important;
+    border: none;
+    cursor: pointer;
+    line-height: 1;
+  }
+  
+  /* QUITA EL CIRCULO NEGRO */
+  .close::before,
+  .close::after {
+    display: none !important;
+  }
+  
+  /* HOVER */
+  .close:hover {
     color: #64a19d !important;
   }
   
-  .modal-content img {
-    border-radius: 1rem;
-    margin: 1rem 0 1.25rem 0;
+  /* RESPONSIVE */
+  @media (max-width: 768px) {
+    .modal-content {
+      padding: 1.5rem;
+    }
+  
+    .modal-content img {
+      max-width: 100%;
+    }
   }
+  

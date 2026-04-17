@@ -2,7 +2,7 @@
 global $site;
 ?>
 
-<section class="contact-section contact-variant-tech-neon" id="contact">
+<section class="contact-section contact-variant-glass-premium-dark" id="contact">
     <div class="container px-4 px-lg-5">
         <div class="text-center mb-5">
             <h2 class="contact-title">Contáctanos</h2>

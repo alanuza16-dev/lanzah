@@ -83,6 +83,17 @@ window.addEventListener('DOMContentLoaded', event => {
             });
         });
     });
+
+    const heroCarousel = document.querySelector('#heroCarousel');
+    if (heroCarousel) {
+        heroCarousel.addEventListener('slide.bs.carousel', () => {
+            heroCarousel.classList.add('is-transitioning');
+        });
+
+        heroCarousel.addEventListener('slid.bs.carousel', () => {
+            heroCarousel.classList.remove('is-transitioning');
+        });
+    }
 });
 
 function abrirModal(id) {

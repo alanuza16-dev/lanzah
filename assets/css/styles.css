@@ -13176,19 +13176,27 @@ button.btn {
 }
 
 #heroCarousel .hero-slide::before {
+  opacity: 0.68;
   transition: opacity 1.05s ease-in-out, background-color 1.05s ease-in-out;
   animation: lanzahHeroPulse 5.6s ease-in-out infinite;
 }
 
+#heroCarousel.carousel-fade .carousel-item-next.carousel-item-start .hero-slide::before,
+#heroCarousel.carousel-fade .carousel-item-prev.carousel-item-end .hero-slide::before,
+#heroCarousel.carousel-fade .active.carousel-item-start .hero-slide::before,
+#heroCarousel.carousel-fade .active.carousel-item-end .hero-slide::before {
+  opacity: 0.84;
+}
+
 @keyframes lanzahHeroPulse {
   0% {
-    opacity: 0.72;
+    opacity: 0.68;
   }
   50% {
-    opacity: 0.56;
+    opacity: 0.54;
   }
   100% {
-    opacity: 0.72;
+    opacity: 0.68;
   }
 }
   

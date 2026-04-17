@@ -13181,11 +13181,16 @@ button.btn {
   animation: lanzahHeroPulse 5.6s ease-in-out infinite;
 }
 
-#heroCarousel.carousel-fade .carousel-item-next.carousel-item-start .hero-slide::before,
-#heroCarousel.carousel-fade .carousel-item-prev.carousel-item-end .hero-slide::before,
-#heroCarousel.carousel-fade .active.carousel-item-start .hero-slide::before,
-#heroCarousel.carousel-fade .active.carousel-item-end .hero-slide::before {
-  opacity: 0.84;
+#heroCarousel .hero-slide {
+  transition: filter 1.05s ease-in-out;
+  filter: brightness(1);
+}
+
+#heroCarousel.carousel-fade .carousel-item-next.carousel-item-start .hero-slide,
+#heroCarousel.carousel-fade .carousel-item-prev.carousel-item-end .hero-slide,
+#heroCarousel.carousel-fade .active.carousel-item-start .hero-slide,
+#heroCarousel.carousel-fade .active.carousel-item-end .hero-slide {
+  filter: brightness(0.78);
 }
 
 @keyframes lanzahHeroPulse {

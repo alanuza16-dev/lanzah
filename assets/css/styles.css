@@ -13157,37 +13157,24 @@ button.btn {
    ========================================================== */
 
 #heroCarousel .carousel-item {
-  transition: opacity 1.15s ease-in-out !important;
-  transform: none !important;
-}
-
-#heroCarousel.carousel-fade .carousel-item {
-  opacity: 0;
-  visibility: hidden;
-}
-
-#heroCarousel.carousel-fade .carousel-item.active,
-#heroCarousel.carousel-fade .carousel-item-next.carousel-item-start,
-#heroCarousel.carousel-fade .carousel-item-prev.carousel-item-end {
-  opacity: 1;
-  visibility: visible;
-  z-index: 1;
-}
-
-#heroCarousel.carousel-fade .active.carousel-item-start,
-#heroCarousel.carousel-fade .active.carousel-item-end {
-  opacity: 0;
-  visibility: visible;
-  z-index: 0;
-  transition: opacity 1.15s ease-in-out !important;
+  transition: opacity 1.05s ease-in-out !important;
 }
 
 #heroCarousel .hero-slide {
   background-color: #060606;
 }
 
+#heroCarousel.carousel-fade .carousel-item {
+  transition: opacity 1.05s ease-in-out !important;
+}
+
+#heroCarousel.carousel-fade .active.carousel-item-start,
+#heroCarousel.carousel-fade .active.carousel-item-end {
+  transition: opacity 1.05s ease-in-out !important;
+}
+
 #heroCarousel .hero-slide::before {
-  transition: opacity 1.15s ease-in-out, background-color 1.15s ease-in-out;
+  transition: opacity 1.05s ease-in-out, background-color 1.05s ease-in-out;
   animation: lanzahHeroPulse 5.6s ease-in-out infinite;
 }
 

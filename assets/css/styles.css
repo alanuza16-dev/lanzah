@@ -13161,13 +13161,8 @@ button.btn {
 }
 
 #heroCarousel .carousel-item {
-  transition: opacity 1.1s ease-in-out !important;
+  transition: opacity 1.15s ease-in-out !important;
   transform: none !important;
-}
-
-#heroCarousel.carousel-fade .carousel-item,
-#heroCarousel .carousel-item {
-  opacity: 0;
 }
 
 #heroCarousel.carousel-fade .carousel-item.active,
@@ -13179,10 +13174,23 @@ button.btn {
 #heroCarousel.carousel-fade .active.carousel-item-start,
 #heroCarousel.carousel-fade .active.carousel-item-end {
   opacity: 0;
-  transition: opacity 1.1s ease-in-out !important;
+  transition: opacity 1.15s ease-in-out !important;
 }
 
 #heroCarousel .hero-slide::before {
-  transition: opacity 1.1s ease-in-out;
+  transition: opacity 1.15s ease-in-out, background-color 1.15s ease-in-out;
+  animation: lanzahHeroPulse 5.6s ease-in-out infinite;
+}
+
+@keyframes lanzahHeroPulse {
+  0% {
+    opacity: 0.92;
+  }
+  50% {
+    opacity: 0.78;
+  }
+  100% {
+    opacity: 0.92;
+  }
 }
   

@@ -84,15 +84,69 @@ window.addEventListener('DOMContentLoaded', event => {
         });
     });
 
-    const heroCarousel = document.querySelector('#heroCarousel');
-    if (heroCarousel) {
-        heroCarousel.addEventListener('slide.bs.carousel', () => {
-            heroCarousel.classList.add('is-transitioning');
+    const lanzahHero = document.querySelector('#lanzahHero');
+    if (lanzahHero) {
+        const panels = Array.from(lanzahHero.querySelectorAll('.lanzah-hero-panel'));
+        const dots = Array.from(lanzahHero.querySelectorAll('.lanzah-hero-dots button'));
+        const arrows = Array.from(lanzahHero.querySelectorAll('.lanzah-hero-arrow'));
+        let activeIndex = panels.findIndex(panel => panel.classList.contains('is-active'));
+        let intervalId = null;
+        let transitionTimeout = null;
+
+        const syncDots = () => {
+            dots.forEach((dot, index) => {
+                dot.classList.toggle('is-active', index === activeIndex);
+            });
+        };
+
+        const goToSlide = (nextIndex) => {
+            if (nextIndex === activeIndex) return;
+            const currentPanel = panels[activeIndex];
+            const nextPanel = panels[nextIndex];
+
+            if (!currentPanel || !nextPanel) return;
+
+            lanzahHero.classList.add('is-transitioning');
+            currentPanel.classList.add('is-exiting');
+            nextPanel.classList.add('is-entering');
+
+            window.clearTimeout(transitionTimeout);
+            transitionTimeout = window.setTimeout(() => {
+                currentPanel.classList.remove('is-active', 'is-exiting');
+                nextPanel.classList.remove('is-entering');
+                nextPanel.classList.add('is-active');
+                activeIndex = nextIndex;
+                syncDots();
+                lanzahHero.classList.remove('is-transitioning');
+            }, 700);
+        };
+
+        const nextSlide = () => goToSlide((activeIndex + 1) % panels.length);
+        const prevSlide = () => goToSlide((activeIndex - 1 + panels.length) % panels.length);
+
+        const restartAutoPlay = () => {
+            window.clearInterval(intervalId);
+            const delay = Number(panels[activeIndex]?.dataset.delay || 5000);
+            intervalId = window.setInterval(nextSlide, delay);
+        };
+
+        dots.forEach((dot, index) => {
+            dot.addEventListener('click', () => {
+                goToSlide(index);
+                restartAutoPlay();
+            });
         });
 
-        heroCarousel.addEventListener('slid.bs.carousel', () => {
-            heroCarousel.classList.remove('is-transitioning');
+        arrows.forEach(arrow => {
+            arrow.addEventListener('click', () => {
+                if (arrow.dataset.direction === 'prev') prevSlide();
+                else nextSlide();
+                restartAutoPlay();
+            });
         });
+
+        syncDots();
+        restartAutoPlay();
     }
 });
 

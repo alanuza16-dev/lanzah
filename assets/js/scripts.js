@@ -1,5 +1,6 @@
 /*!
 * Start Bootstrap - Grayscale v7.0.6
+* Prueba de conexion numero 2
 */
 
 window.addEventListener('DOMContentLoaded', () => {

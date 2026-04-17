@@ -12589,3 +12589,249 @@ button.btn-primary:active {
 .contact-section h4 {
   color: #111111;
 }
+
+
+/* ==========================================================
+   CLEAN FINAL OVERRIDES - April 2026
+   ========================================================== */
+
+:root {
+  --site-text-size: 1rem;
+  --site-text-size-mobile: 0.95rem;
+  --site-text-line: 1.65;
+}
+
+body {
+  font-size: var(--site-text-size);
+  line-height: var(--site-text-line);
+  background:
+    radial-gradient(circle at top, rgba(58,58,58,0.16) 0%, rgba(58,58,58,0) 28%),
+    linear-gradient(180deg, #000000 0%, #080808 18%, #101010 42%, #1a1a1a 72%, #2b2b2b 100%) !important;
+  color: #f2f2f2;
+}
+
+p,
+li,
+.small,
+.text-white-50,
+.text-black-50,
+.signup-section .form-signup input,
+.contact-section .small,
+.projects-section .project-text,
+.projects-section .featured-text,
+.about-section p,
+.hero-subtitle,
+.masthead h2 {
+  font-size: var(--site-text-size);
+  line-height: var(--site-text-line);
+}
+
+@media (max-width: 767.98px) {
+  body {
+    font-size: var(--site-text-size-mobile);
+  }
+
+  p,
+  li,
+  .small,
+  .text-white-50,
+  .text-black-50,
+  .signup-section .form-signup input,
+  .contact-section .small,
+  .projects-section .project-text,
+  .projects-section .featured-text,
+  .about-section p,
+  .hero-subtitle,
+  .masthead h2 {
+    font-size: var(--site-text-size-mobile) !important;
+    line-height: 1.6 !important;
+  }
+}
+
+/* Stronger pill glow and shimmer */
+#mainNav .nav-pill-container {
+  background: rgba(255, 255, 255, 0.09) !important;
+  border: 1px solid rgba(255, 255, 255, 0.18) !important;
+  box-shadow: 0 10px 34px rgba(0,0,0,0.18), inset 0 1px 0 rgba(255,255,255,0.08) !important;
+}
+
+#mainNav .nav-pill-container::before {
+  background: linear-gradient(120deg,
+      rgba(255,255,255,0.18),
+      rgba(114,236,255,0.55),
+      rgba(160,255,214,0.30),
+      rgba(255,255,255,0.12),
+      rgba(114,236,255,0.42)) !important;
+  background-size: 240% 240% !important;
+  animation: pillBorderMove 7s linear infinite !important;
+}
+
+#mainNav .nav-pill-container::after {
+  content: "";
+  position: absolute;
+  inset: -130% auto auto -12%;
+  width: 45%;
+  height: 340%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.22), transparent);
+  transform: rotate(16deg);
+  animation: navShimmer 7.5s linear infinite;
+  pointer-events: none;
+}
+
+@keyframes navShimmer {
+  0% { transform: translateX(-160%) rotate(16deg); }
+  100% { transform: translateX(430%) rotate(16deg); }
+}
+
+#mainNav.navbar-shrink .nav-pill-container {
+  background: rgba(255,255,255,0.14) !important;
+  border: 1px solid rgba(255,255,255,0.22) !important;
+  box-shadow: 0 16px 40px rgba(0,0,0,0.22), inset 0 1px 0 rgba(255,255,255,0.08) !important;
+}
+
+/* Keep shrink on tablet/mobile */
+@media (max-width: 991.98px) {
+  #mainNav.navbar-shrink .nav-pill-container {
+    width: calc(100% - 1.15rem) !important;
+    max-width: none !important;
+    padding: 0.48rem 0.78rem !important;
+    border-radius: 999px !important;
+  }
+
+  #mainNav.navbar-shrink .nav-logo {
+    height: 34px !important;
+  }
+}
+
+@media (max-width: 767.98px) {
+  #mainNav.navbar-shrink .nav-pill-container {
+    width: calc(100% - 0.95rem) !important;
+    padding: 0.42rem 0.64rem !important;
+  }
+
+  #mainNav .nav-link,
+  #mainNav.navbar-shrink .nav-link {
+    font-size: 0.72rem !important;
+    padding: 0.44rem 0.46rem !important;
+  }
+}
+
+/* Modern CTA buttons for Ver más / Ver servicios / Contáctanos */
+.btn,
+.btn-primary,
+.masthead .btn,
+.signup-section .btn,
+.projects-section .btn,
+a.btn,
+button.btn {
+  border-radius: 999px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.04em !important;
+  text-transform: uppercase !important;
+  border: 1px solid rgba(100, 161, 157, 0.45) !important;
+}
+
+.btn-primary,
+.masthead .btn,
+.signup-section .btn,
+.projects-section .btn {
+  color: #ffffff !important;
+  background: linear-gradient(135deg, rgba(100,161,157,0.96) 0%, rgba(55,98,96,0.96) 100%) !important;
+  box-shadow:
+    0 10px 24px rgba(100,161,157,0.22),
+    inset 0 1px 0 rgba(255,255,255,0.12) !important;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  min-width: 180px;
+  padding: 0.95rem 1.45rem !important;
+  font-size: 0.78rem !important;
+}
+
+.btn-primary:hover,
+.masthead .btn:hover,
+.signup-section .btn:hover,
+.projects-section .btn:hover {
+  transform: translateY(-2px);
+  color: #ffffff !important;
+  background: linear-gradient(135deg, rgba(123,194,190,0.98) 0%, rgba(64,114,111,0.98) 100%) !important;
+  border-color: rgba(130, 201, 196, 0.55) !important;
+  box-shadow:
+    0 16px 34px rgba(100,161,157,0.28),
+    0 0 18px rgba(100,161,157,0.10) !important;
+}
+
+.btn-primary:focus,
+.btn-primary:active,
+.masthead .btn:focus,
+.masthead .btn:active,
+.signup-section .btn:focus,
+.signup-section .btn:active,
+.projects-section .btn:focus,
+.projects-section .btn:active {
+  color: #ffffff !important;
+  background: linear-gradient(135deg, rgba(95,153,149,0.98) 0%, rgba(70,114,111,0.98) 100%) !important;
+  box-shadow: 0 0 0 0.18rem rgba(100,161,157,0.18), 0 12px 28px rgba(100,161,157,0.20) !important;
+}
+
+@media (max-width: 767.98px) {
+  .btn-primary,
+  .masthead .btn,
+  .signup-section .btn,
+  .projects-section .btn {
+    min-width: 148px;
+    padding: 0.82rem 1.05rem !important;
+    font-size: 0.7rem !important;
+  }
+}
+
+/* Contact cards improved contrast */
+.contact-section .card {
+  border: 1px solid rgba(255,255,255,0.08) !important;
+  border-bottom: none !important;
+  background: linear-gradient(180deg, rgba(255,255,255,0.92) 0%, rgba(239,239,239,0.86) 100%) !important;
+  box-shadow: 0 16px 36px rgba(0,0,0,0.14) !important;
+  border-radius: 1.35rem !important;
+}
+
+.contact-section .card-body {
+  border-radius: 1.35rem;
+}
+
+/* Ensure WhatsApp tech animation wins over old pulse */
+.whatsapp-float {
+  animation: none !important;
+}
+
+.whatsapp-float img {
+  animation: whatsappGlyph 2.6s ease-in-out infinite !important;
+}
+
+/* Stronger mobile text sizing in hero/carousel */
+@media (max-width: 991.98px) {
+  .hero-title,
+  .masthead h1 {
+    font-size: clamp(2.15rem, 6.4vw, 4rem) !important;
+  }
+
+  .hero-subtitle,
+  .masthead h2 {
+    width: min(92vw, 620px);
+    font-size: clamp(0.95rem, 2vw, 1.05rem) !important;
+  }
+}
+
+@media (max-width: 575.98px) {
+  .hero-title,
+  .masthead h1 {
+    font-size: clamp(1.85rem, 8vw, 2.8rem) !important;
+  }
+
+  .hero-subtitle,
+  .masthead h2,
+  .about-section p,
+  .projects-section .project-text,
+  .projects-section .featured-text,
+  .contact-section .small {
+    font-size: 0.92rem !important;
+  }
+}

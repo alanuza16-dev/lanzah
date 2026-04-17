@@ -57,7 +57,7 @@ global $site;
         <div class="social d-flex justify-content-center">
             <a class="mx-2" href="#" onclick="openInstagram(); return false;" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
             <a class="mx-2" href="#" onclick="openFacebook(); return false;" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
-            <a class="mx-2" href="#" aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a>
+            
         </div>
     </div>
 </section>

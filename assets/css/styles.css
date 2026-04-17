@@ -13156,25 +13156,34 @@ button.btn {
    LANZAH HERO TRANSITION TUNING
    ========================================================== */
 
-#heroCarousel .carousel-inner {
-  background: #000;
-}
-
 #heroCarousel .carousel-item {
   transition: opacity 1.15s ease-in-out !important;
   transform: none !important;
+}
+
+#heroCarousel.carousel-fade .carousel-item {
+  opacity: 0;
+  visibility: hidden;
 }
 
 #heroCarousel.carousel-fade .carousel-item.active,
 #heroCarousel.carousel-fade .carousel-item-next.carousel-item-start,
 #heroCarousel.carousel-fade .carousel-item-prev.carousel-item-end {
   opacity: 1;
+  visibility: visible;
+  z-index: 1;
 }
 
 #heroCarousel.carousel-fade .active.carousel-item-start,
 #heroCarousel.carousel-fade .active.carousel-item-end {
   opacity: 0;
+  visibility: visible;
+  z-index: 0;
   transition: opacity 1.15s ease-in-out !important;
+}
+
+#heroCarousel .hero-slide {
+  background-color: #060606;
 }
 
 #heroCarousel .hero-slide::before {
@@ -13184,13 +13193,13 @@ button.btn {
 
 @keyframes lanzahHeroPulse {
   0% {
-    opacity: 0.92;
+    opacity: 0.72;
   }
   50% {
-    opacity: 0.78;
+    opacity: 0.56;
   }
   100% {
-    opacity: 0.92;
+    opacity: 0.72;
   }
 }
   

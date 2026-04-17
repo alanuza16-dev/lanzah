@@ -1,33 +1,28 @@
 /*!
-* Start Bootstrap - Grayscale v7.0.6
+* Lanzah Hero + Navbar
 */
 
-window.addEventListener('DOMContentLoaded', event => {
+window.addEventListener('DOMContentLoaded', () => {
+    const navbar = document.querySelector('#mainNav');
+    const navLinks = document.querySelectorAll('#mainNav .nav-link');
+    const sections = [
+        document.querySelector('#about'),
+        document.querySelector('#projects'),
+        document.querySelector('#contact')
+    ].filter(Boolean);
 
-    const navbarShrink = function () {
-        const navbarCollapsible = document.body.querySelector('#mainNav');
-        if (!navbarCollapsible) {
-            return;
-        }
+    const navbarShrink = () => {
+        if (!navbar) return;
 
-        if (window.scrollY === 0) {
-            navbarCollapsible.classList.remove('navbar-shrink');
+        if (window.scrollY > 40) {
+            navbar.classList.add('navbar-shrink');
         } else {
-            navbarCollapsible.classList.add('navbar-shrink');
+            navbar.classList.remove('navbar-shrink');
         }
     };
 
-    const setActiveLink = function () {
-        const navLinks = document.querySelectorAll('#mainNav .nav-link');
-        const sections = [
-            document.querySelector('#about'),
-            document.querySelector('#projects'),
-            document.querySelector('#contact')
-        ].filter(Boolean);
-
-        if (!navLinks.length || !sections.length) {
-            return;
-        }
+    const setActiveLink = () => {
+        if (!sections.length || !navLinks.length) return;
 
         let currentId = '';
         const triggerPoint = window.scrollY + 180;
@@ -59,8 +54,6 @@ window.addEventListener('DOMContentLoaded', event => {
         setActiveLink();
     });
 
-    const navLinks = document.querySelectorAll('#mainNav .nav-link');
-
     navLinks.forEach(link => {
         link.addEventListener('click', (e) => {
             const href = link.getAttribute('href');
@@ -84,69 +77,73 @@ window.addEventListener('DOMContentLoaded', event => {
         });
     });
 
-    const lanzahHero = document.querySelector('#lanzahHero');
-    if (lanzahHero) {
-        const panels = Array.from(lanzahHero.querySelectorAll('.lanzah-hero-panel'));
-        const dots = Array.from(lanzahHero.querySelectorAll('.lanzah-hero-dots button'));
-        const arrows = Array.from(lanzahHero.querySelectorAll('.lanzah-hero-arrow'));
-        let activeIndex = panels.findIndex(panel => panel.classList.contains('is-active'));
+    /* HERO SLIDER */
+    const hero = document.querySelector('#lanzahHero');
+    if (hero) {
+        const panels = hero.querySelectorAll('.lanzah-hero-panel');
+        const dots = hero.querySelectorAll('.lanzah-hero-dots button');
+        const prevBtn = hero.querySelector('.lanzah-hero-arrow[data-direction="prev"]');
+        const nextBtn = hero.querySelector('.lanzah-hero-arrow[data-direction="next"]');
+
+        let current = 0;
         let intervalId = null;
-        let transitionTimeout = null;
 
-        const syncDots = () => {
-            dots.forEach((dot, index) => {
-                dot.classList.toggle('is-active', index === activeIndex);
+        const showSlide = (index) => {
+            panels.forEach((panel, i) => {
+                panel.classList.toggle('is-active', i === index);
             });
+
+            dots.forEach((dot, i) => {
+                dot.classList.toggle('is-active', i === index);
+            });
+
+            current = index;
         };
 
-        const goToSlide = (nextIndex) => {
-            if (nextIndex === activeIndex) return;
-            const currentPanel = panels[activeIndex];
-            const nextPanel = panels[nextIndex];
-
-            if (!currentPanel || !nextPanel) return;
-
-            lanzahHero.classList.add('is-transitioning');
-            currentPanel.classList.add('is-exiting');
-            nextPanel.classList.add('is-entering');
-
-            window.clearTimeout(transitionTimeout);
-            transitionTimeout = window.setTimeout(() => {
-                currentPanel.classList.remove('is-active', 'is-exiting');
-                nextPanel.classList.remove('is-entering');
-                nextPanel.classList.add('is-active');
-                activeIndex = nextIndex;
-                syncDots();
-                lanzahHero.classList.remove('is-transitioning');
-            }, 700);
+        const nextSlide = () => {
+            const next = (current + 1) % panels.length;
+            showSlide(next);
         };
 
-        const nextSlide = () => goToSlide((activeIndex + 1) % panels.length);
-        const prevSlide = () => goToSlide((activeIndex - 1 + panels.length) % panels.length);
-
-        const restartAutoPlay = () => {
-            window.clearInterval(intervalId);
-            const delay = Number(panels[activeIndex]?.dataset.delay || 5000);
-            intervalId = window.setInterval(nextSlide, delay);
+        const prevSlide = () => {
+            const prev = (current - 1 + panels.length) % panels.length;
+            showSlide(prev);
         };
+
+        const startAutoplay = () => {
+            stopAutoplay();
+            intervalId = setInterval(nextSlide, 5000);
+        };
+
+        const stopAutoplay = () => {
+            if (intervalId) {
+                clearInterval(intervalId);
+            }
+        };
+
+        if (nextBtn) {
+            nextBtn.addEventListener('click', () => {
+                nextSlide();
+                startAutoplay();
+            });
+        }
+
+        if (prevBtn) {
+            prevBtn.addEventListener('click', () => {
+                prevSlide();
+                startAutoplay();
+            });
+        }
 
         dots.forEach((dot, index) => {
             dot.addEventListener('click', () => {
-                goToSlide(index);
-                restartAutoPlay();
+                showSlide(index);
+                startAutoplay();
             });
         });
 
-        arrows.forEach(arrow => {
-            arrow.addEventListener('click', () => {
-                if (arrow.dataset.direction === 'prev') prevSlide();
-                else nextSlide();
-                restartAutoPlay();
-            });
-        });
-
-        syncDots();
-        restartAutoPlay();
+        showSlide(0);
+        startAutoplay();
     }
 });
 

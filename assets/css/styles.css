@@ -13494,3 +13494,289 @@ button.btn {
       right: 12px;
     }
   }
+
+
+
+/* =========================================================
+   HERO OVERRIDE FINAL - FONDO UNICO + FLECHAS CORRECTAS
+   ========================================================= */
+
+.masthead,
+.lanzah-hero {
+  min-height: 100svh !important;
+  height: 100svh !important;
+  padding: 0 !important;
+  position: relative;
+  overflow: hidden;
+  background: #000 !important;
+}
+
+.lanzah-hero-stage {
+  position: relative;
+  min-height: 100svh;
+  height: 100svh;
+  isolation: isolate;
+  background: #000 !important;
+}
+
+/* Fondo unico fijo */
+.lanzah-hero-stage::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background-image: url('../img/fondo.jpg') !important;
+  background-position: center center !important;
+  background-repeat: no-repeat !important;
+  background-size: cover !important;
+  transform: scale(1.02);
+  opacity: 1 !important;
+  pointer-events: none;
+}
+
+/* Capa oscura */
+.lanzah-hero-stage::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  background: linear-gradient(
+    180deg,
+    rgba(0, 0, 0, 0.18) 0%,
+    rgba(0, 0, 0, 0.32) 42%,
+    rgba(0, 0, 0, 0.58) 100%
+  ) !important;
+  pointer-events: none;
+}
+
+/* Los slides solo cambian texto */
+.lanzah-hero-panel {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 0.65s ease, visibility 0.65s ease;
+}
+
+.lanzah-hero-panel.is-active,
+.lanzah-hero-panel.is-entering {
+  opacity: 1 !important;
+  visibility: visible !important;
+  pointer-events: auto !important;
+}
+
+.lanzah-hero-panel.is-exiting {
+  opacity: 0 !important;
+  visibility: hidden !important;
+}
+
+/* Oculta backgrounds individuales viejos */
+.lanzah-hero-media,
+.lanzah-hero-shadow,
+.lanzah-hero-media.slide-1,
+.lanzah-hero-media.slide-2,
+.lanzah-hero-media.slide-3 {
+  display: none !important;
+  background: none !important;
+  background-image: none !important;
+}
+
+/* Oculta los mini mensajes */
+.lanzah-hero-kicker {
+  display: none !important;
+}
+
+.lanzah-hero-content {
+  position: relative;
+  z-index: 4;
+  width: min(92vw, 1100px);
+  max-width: min(92vw, 1100px);
+  min-height: 100svh;
+  margin: 0 auto;
+  padding: 7rem 1rem 5rem;
+  display: flex !important;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.hero-title,
+.masthead h1 {
+  max-width: min(92vw, 1000px) !important;
+  margin: 0 auto !important;
+  color: #fff !important;
+  background: none !important;
+  -webkit-text-fill-color: #fff !important;
+  background-clip: border-box !important;
+  font-family: "Varela Round", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif !important;
+  font-size: clamp(2.9rem, 7vw, 6.7rem) !important;
+  line-height: 0.98 !important;
+  letter-spacing: clamp(0.08rem, 0.6vw, 0.42rem) !important;
+  white-space: normal;
+  word-break: normal !important;
+  overflow-wrap: anywhere;
+  text-wrap: balance;
+}
+
+.hero-subtitle,
+.masthead h2 {
+  width: min(90vw, 760px);
+  max-width: min(90vw, 760px) !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+  font-size: clamp(1rem, 2vw, 1.3rem) !important;
+  line-height: 1.55 !important;
+  color: rgba(255, 255, 255, 0.86) !important;
+  text-wrap: balance;
+}
+
+.lanzah-hero-controls {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  pointer-events: none;
+}
+
+.lanzah-hero-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 52px !important;
+  height: 52px !important;
+  min-width: 52px !important;
+  min-height: 52px !important;
+  padding: 0 !important;
+  border-radius: 999px !important;
+  border: 1px solid rgba(255, 255, 255, 0.24) !important;
+  background: rgba(0, 0, 0, 0.28) !important;
+  color: #fff !important;
+  font-size: 0 !important;
+  line-height: 1 !important;
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.18);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  pointer-events: auto;
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.lanzah-hero-arrow span {
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  font-size: 2rem !important;
+  line-height: 1 !important;
+  transform: translateY(-1px);
+}
+
+.lanzah-hero-arrow:hover {
+  background: rgba(100, 161, 157, 0.24) !important;
+  border-color: rgba(100, 161, 157, 0.42) !important;
+}
+
+.lanzah-hero-arrow[data-direction="prev"] {
+  left: 1.5rem !important;
+}
+
+.lanzah-hero-arrow[data-direction="next"] {
+  right: 1.5rem !important;
+}
+
+.lanzah-hero-dots {
+  position: absolute;
+  left: 50%;
+  bottom: 1.6rem;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 0.7rem;
+  pointer-events: auto;
+  z-index: 6;
+}
+
+.lanzah-hero-dots button {
+  width: 36px !important;
+  height: 4px !important;
+  border: 0 !important;
+  border-radius: 999px !important;
+  background: rgba(255, 255, 255, 0.32) !important;
+  padding: 0 !important;
+  transition: all 0.25s ease;
+}
+
+.lanzah-hero-dots button.is-active {
+  background: #ffffff !important;
+  box-shadow: 0 0 0 6px rgba(255, 255, 255, 0.08);
+}
+
+@media (max-width: 991.98px) {
+  .lanzah-hero-content {
+    padding: 6.5rem 1rem 4.8rem;
+    width: min(94vw, 900px);
+  }
+
+  .hero-title,
+  .masthead h1 {
+    font-size: clamp(2.25rem, 8vw, 5rem) !important;
+    letter-spacing: clamp(0.04rem, 0.35vw, 0.18rem) !important;
+  }
+
+  .hero-subtitle,
+  .masthead h2 {
+    font-size: clamp(0.95rem, 2.4vw, 1.1rem) !important;
+    width: min(92vw, 620px);
+  }
+}
+
+@media (max-width: 767.98px) {
+  .lanzah-hero-arrow {
+    width: 42px !important;
+    height: 42px !important;
+    min-width: 42px !important;
+    min-height: 42px !important;
+  }
+
+  .lanzah-hero-arrow span {
+    font-size: 1.55rem !important;
+  }
+
+  .lanzah-hero-arrow[data-direction="prev"] {
+    left: 0.75rem !important;
+  }
+
+  .lanzah-hero-arrow[data-direction="next"] {
+    right: 0.75rem !important;
+  }
+
+  .lanzah-hero-dots {
+    bottom: 1.15rem;
+  }
+
+  .lanzah-hero-dots button {
+    width: 26px !important;
+  }
+
+  .lanzah-hero-content {
+    padding: 6rem 1rem 4.5rem;
+  }
+
+  .hero-title,
+  .masthead h1 {
+    font-size: clamp(2rem, 10vw, 3.8rem) !important;
+  }
+
+  .hero-subtitle,
+  .masthead h2 {
+    font-size: 0.95rem !important;
+  }
+}

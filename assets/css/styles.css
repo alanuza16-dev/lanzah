@@ -12835,3 +12835,67 @@ button.btn {
     font-size: 0.92rem !important;
   }
 }
+
+/* =========================
+   GLASSMORPHISM - CONTACT CARDS
+   ========================= */
+
+.contact-section .card {
+  background: rgba(255, 255, 255, 0.14) !important;
+  border: 1px solid rgba(255, 255, 255, 0.16) !important;
+  border-radius: 1.4rem;
+  box-shadow:
+    0 10px 30px rgba(0, 0, 0, 0.18),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  overflow: hidden;
+}
+
+.contact-section .card-body {
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.10) 0%,
+    rgba(255, 255, 255, 0.04) 100%
+  );
+  border-radius: 1.4rem;
+}
+
+.contact-section .card h4,
+.contact-section .card .small,
+.contact-section .card a {
+  color: #f5f5f5 !important;
+}
+
+.contact-section .card hr {
+  border-color: rgba(255, 255, 255, 0.22);
+  opacity: 1;
+}
+
+.contact-section .card i {
+  color: #7fd1cb !important;
+}
+
+.contact-section .card:hover {
+  transform: translateY(-4px);
+  transition: all 0.28s ease;
+  box-shadow:
+    0 16px 38px rgba(0, 0, 0, 0.24),
+    0 0 20px rgba(100, 161, 157, 0.12);
+}
+
+.contact-section {
+  background: transparent !important;
+}
+
+.contact-section::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.02) 0%,
+    rgba(255, 255, 255, 0.00) 100%
+  );
+  pointer-events: none;
+}

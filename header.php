@@ -10,7 +10,7 @@
     <meta name="keywords" content="páginas web, desarrollo web, landing page, marketing digital, creacion de contenido, redes sociales, facebook, instragram, Costa Rica">
     <meta name="author" content="Lanzah Enterprise">
     <!-- Google Search Console-->
-    <meta name="google-site-verification" content="CODIGO_AQUI">
+    <meta name="google-site-verification" content="N1cbr2oiBnh0D0rIYqZR7liWoV6uC4XF_JDdLf1Lh3Y" />
     <!-- Google Analytics-->
     <script async src="https://www.googletagmanager.com/gtag/js?id=TU_ID"></script>
         <script>

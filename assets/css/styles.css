@@ -13151,4 +13151,38 @@ button.btn {
       max-width: 100%;
     }
   }
+
+/* ==========================================================
+   LANZAH HERO TRANSITION TUNING
+   ========================================================== */
+
+#heroCarousel .carousel-inner {
+  background: #000;
+}
+
+#heroCarousel .carousel-item {
+  transition: opacity 1.1s ease-in-out !important;
+  transform: none !important;
+}
+
+#heroCarousel.carousel-fade .carousel-item,
+#heroCarousel .carousel-item {
+  opacity: 0;
+}
+
+#heroCarousel.carousel-fade .carousel-item.active,
+#heroCarousel.carousel-fade .carousel-item-next.carousel-item-start,
+#heroCarousel.carousel-fade .carousel-item-prev.carousel-item-end {
+  opacity: 1;
+}
+
+#heroCarousel.carousel-fade .active.carousel-item-start,
+#heroCarousel.carousel-fade .active.carousel-item-end {
+  opacity: 0;
+  transition: opacity 1.1s ease-in-out !important;
+}
+
+#heroCarousel .hero-slide::before {
+  transition: opacity 1.1s ease-in-out;
+}
   

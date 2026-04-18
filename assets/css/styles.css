@@ -14264,22 +14264,37 @@ header.masthead.lanzah-hero,
 }
 
 @media (max-width: 767.98px) {
+  #hero .lanzah-hero-panel,
+  .lanzah-hero .lanzah-hero-panel {
+    justify-content: center !important;
+    align-items: center !important;
+  }
+
   #hero .lanzah-hero-content,
   .lanzah-hero .lanzah-hero-content {
-    width: min(94vw, 760px) !important;
-    max-width: min(94vw, 760px) !important;
-    padding-left: 1.25rem !important;
-    padding-right: 1.25rem !important;
+    width: min(86vw, 560px) !important;
+    max-width: min(86vw, 560px) !important;
+    padding-left: 0.5rem !important;
+    padding-right: 0.5rem !important;
+    left: auto !important;
+    right: auto !important;
+    transform: none !important;
   }
 
   #hero .hero-title,
   .lanzah-hero .hero-title {
     max-width: 100% !important;
+    letter-spacing: 0.04em !important;
   }
 
   #hero .hero-subtitle,
   .lanzah-hero .hero-subtitle {
-    width: min(88vw, 560px) !important;
-    max-width: min(88vw, 560px) !important;
+    width: min(82vw, 460px) !important;
+    max-width: min(82vw, 460px) !important;
+  }
+
+  #hero .lanzah-hero-arrow,
+  .lanzah-hero .lanzah-hero-arrow {
+    display: none !important;
   }
 }

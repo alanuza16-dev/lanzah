@@ -14407,34 +14407,47 @@ header.masthead.lanzah-hero,
     }
 }
 
+/* =========================
+   LOGO MINIMALISTA TIPO APPLE
+========================= */
+
 .footer-mini-logo{
-    width: 95px;
+    width: 85px;
     height: auto;
-    margin-top: 18px;
-    padding: 12px;
 
-    background: rgba(255, 255, 255, 0.08);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
+    margin-top: 22px;
+    padding: 14px;
 
-    border: 1px solid rgba(255,255,255,0.12);
-    border-radius: 20px;
+    background: rgba(255,255,255,0.03);
+
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 22px;
+
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
 
     box-shadow:
-        0 4px 20px rgba(0,0,0,0.35),
-        inset 0 1px 1px rgba(255,255,255,0.08);
+        0 8px 30px rgba(0,0,0,0.30);
 
-    transition: all 0.35s ease;
+    transition:
+        transform 0.35s ease,
+        background 0.35s ease,
+        box-shadow 0.35s ease;
 
-    opacity: 0.95;
+    opacity: 0.92;
 }
 
+/* Hover elegante y sutil */
 .footer-mini-logo:hover{
-    transform: translateY(-4px) scale(1.04);
 
-    background: rgba(255,255,255,0.12);
+    transform:
+        translateY(-3px)
+        scale(1.02);
+
+    background: rgba(255,255,255,0.06);
 
     box-shadow:
-        0 8px 28px rgba(0,0,0,0.45),
-        0 0 15px rgba(255,255,255,0.08);
+        0 12px 35px rgba(0,0,0,0.40);
+
+    opacity: 1;
 }

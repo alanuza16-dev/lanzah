@@ -14408,46 +14408,52 @@ header.masthead.lanzah-hero,
 }
 
 /* =========================
-   LOGO MINIMALISTA TIPO APPLE
+   FOOTER BRAND
+========================= */
+
+.footer-brand{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+/* =========================
+   LOGO MINIMALISTA
 ========================= */
 
 .footer-mini-logo{
-    width: 85px;
+    width: 90px;
     height: auto;
 
-    margin-top: 22px;
-    padding: 14px;
+    margin-top: 18px;
 
-    background: rgba(255,255,255,0.03);
-
-    border: 1px solid rgba(255,255,255,0.06);
-    border-radius: 22px;
-
-    backdrop-filter: blur(18px);
-    -webkit-backdrop-filter: blur(18px);
-
-    box-shadow:
-        0 8px 30px rgba(0,0,0,0.30);
+    opacity: 0.95;
 
     transition:
         transform 0.35s ease,
-        background 0.35s ease,
-        box-shadow 0.35s ease;
+        opacity 0.35s ease,
+        filter 0.35s ease;
 
-    opacity: 0.92;
+    filter:
+        drop-shadow(0 8px 20px rgba(0,0,0,0.35));
 }
 
-/* Hover elegante y sutil */
+/* Hover elegante */
 .footer-mini-logo:hover{
 
     transform:
         translateY(-3px)
-        scale(1.02);
-
-    background: rgba(255,255,255,0.06);
-
-    box-shadow:
-        0 12px 35px rgba(0,0,0,0.40);
+        scale(1.03);
 
     opacity: 1;
+
+    filter:
+        drop-shadow(0 12px 28px rgba(0,0,0,0.45));
+}
+
+/* Centrado de texto */
+.footer-brand .footer-logo,
+.footer-brand .footer-text{
+    text-align: center;
 }

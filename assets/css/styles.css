@@ -14406,3 +14406,35 @@ header.masthead.lanzah-hero,
         padding-left: 0;
     }
 }
+
+.footer-mini-logo{
+    width: 95px;
+    height: auto;
+    margin-top: 18px;
+    padding: 12px;
+
+    background: rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 20px;
+
+    box-shadow:
+        0 4px 20px rgba(0,0,0,0.35),
+        inset 0 1px 1px rgba(255,255,255,0.08);
+
+    transition: all 0.35s ease;
+
+    opacity: 0.95;
+}
+
+.footer-mini-logo:hover{
+    transform: translateY(-4px) scale(1.04);
+
+    background: rgba(255,255,255,0.12);
+
+    box-shadow:
+        0 8px 28px rgba(0,0,0,0.45),
+        0 0 15px rgba(255,255,255,0.08);
+}

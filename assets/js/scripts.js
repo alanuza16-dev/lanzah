@@ -182,28 +182,3 @@ function openFacebook() {
         window.open(webLink, "_blank");
     }, 1500);
 }
-
-// MOSTRAR POPUP AUTOMÁTICAMENTE add
-window.addEventListener("load", () => {
-
-    const popup = document.getElementById("popupOverlay");
-    const cerrar = document.getElementById("cerrarPopup");
-
-    // MOSTRAR DESPUÉS DE 1 SEGUNDO
-    setTimeout(() => {
-        popup.style.display = "flex";
-    }, 1000);
-
-    // CERRAR POPUP
-    cerrar.addEventListener("click", () => {
-        popup.style.display = "none";
-    });
-
-    // CERRAR HACIENDO CLICK FUERA
-    popup.addEventListener("click", (e) => {
-        if(e.target === popup){
-            popup.style.display = "none";
-        }
-    });
-
-});

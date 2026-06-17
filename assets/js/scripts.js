@@ -147,19 +147,77 @@ window.addEventListener('DOMContentLoaded', () => {
     }
 });
 
+let _modalOpener = null;
+
+function _trapFocus(modal) {
+    const focusable = modal.querySelectorAll('button, a[href], [tabindex]:not([tabindex="-1"])');
+    if (!focusable.length) return;
+    const first = focusable[0];
+    const last = focusable[focusable.length - 1];
+    modal._trapHandler = (e) => {
+        if (e.key !== 'Tab') return;
+        if (e.shiftKey) {
+            if (document.activeElement === first) { e.preventDefault(); last.focus(); }
+        } else {
+            if (document.activeElement === last) { e.preventDefault(); first.focus(); }
+        }
+    };
+    document.addEventListener('keydown', modal._trapHandler);
+}
+
+function _releaseFocus(modal) {
+    if (modal._trapHandler) {
+        document.removeEventListener('keydown', modal._trapHandler);
+        modal._trapHandler = null;
+    }
+}
+
 function abrirModal(id) {
     const modal = document.getElementById(id);
-    if (modal) {
-        modal.style.display = "block";
-    }
+    if (!modal) return;
+    _modalOpener = document.activeElement;
+    modal.style.display = "block";
+    modal.setAttribute('aria-hidden', 'false');
+    const closeBtn = modal.querySelector('.close');
+    if (closeBtn) closeBtn.focus();
+    _trapFocus(modal);
 }
 
 function cerrarModal(id) {
     const modal = document.getElementById(id);
-    if (modal) {
-        modal.style.display = "none";
+    if (!modal) return;
+    modal.style.display = "none";
+    modal.setAttribute('aria-hidden', 'true');
+    _releaseFocus(modal);
+    if (_modalOpener && typeof _modalOpener.focus === 'function') {
+        _modalOpener.focus();
+        _modalOpener = null;
     }
 }
+
+document.addEventListener('keydown', (e) => {
+    if (e.key !== 'Escape') return;
+    document.querySelectorAll('.modal').forEach(modal => {
+        if (modal.style.display === 'block') cerrarModal(modal.id);
+    });
+});
+
+document.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll('.modal').forEach(modal => {
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) cerrarModal(modal.id);
+        });
+    });
+
+    document.querySelectorAll('.item[role="button"]').forEach(item => {
+        item.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                item.click();
+            }
+        });
+    });
+});
 
 function openInstagram() {
     const appLink = "instagram://user?username=lanzahenterprise";

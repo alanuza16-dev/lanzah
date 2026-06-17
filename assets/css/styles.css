@@ -14417,3 +14417,58 @@ header.masthead.lanzah-hero,
     align-items: center;
     justify-content: center;
 }
+
+/* =========================
+   ACCESIBILIDAD — MEJORAS CRÍTICAS
+   ========================= */
+
+/* Focus ring visible en cards de servicios */
+.item[role="button"]:focus-visible {
+  outline: 3px solid #64a19d;
+  outline-offset: 4px;
+  border-radius: 10px;
+}
+
+.item[role="button"] {
+  cursor: pointer;
+}
+
+/* Reset de estilos de botón para .close */
+button.close {
+  border: none;
+  font-size: 1.4rem;
+  line-height: 1;
+  padding: 0;
+  font-family: inherit;
+}
+
+button.close:focus-visible {
+  outline: 3px solid #64a19d;
+  outline-offset: 2px;
+}
+
+/* Cursor en backdrop de modal para indicar que se puede cerrar */
+.modal[role="dialog"] {
+  cursor: pointer;
+}
+
+.modal[role="dialog"] .modal-content {
+  cursor: default;
+}
+
+/* WhatsApp — ícono Font Awesome en lugar de imagen externa */
+.whatsapp-float i {
+  font-size: 35px;
+  color: #fff;
+  display: block;
+  filter: drop-shadow(0 0 6px rgba(255, 255, 255, 0.28));
+  animation: whatsappGlyph 2.6s ease-in-out infinite;
+}
+
+@media (max-width: 991.98px) {
+  .whatsapp-float i { font-size: 30px; }
+}
+
+@media (max-width: 575.98px) {
+  .whatsapp-float i { font-size: 26px; }
+}

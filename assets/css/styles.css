@@ -14524,3 +14524,25 @@ button.btn-primary:focus-visible {
   outline: 2px solid rgba(100, 161, 157, 0.9) !important;
   outline-offset: 3px !important;
 }
+
+/* =========================
+   GALAXIA ANIMADA — SECCIÓN ABOUT
+   ========================= */
+
+.galaxy-container {
+  width: 100%;
+  max-width: 480px;
+  display: block;
+}
+
+#lanzahGalaxy {
+  display: block;
+  border-radius: 10px;
+  filter: drop-shadow(0 0 28px rgba(0, 229, 255, 0.14));
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #lanzahGalaxy {
+    animation: none !important;
+  }
+}

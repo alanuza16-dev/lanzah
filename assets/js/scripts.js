@@ -518,12 +518,14 @@ function openFacebook() {
     let dpr = 1;
     let stars = [];
     let dust = [];
+    let shootingStars = [];
     let time = 0;
     let lastFrame = performance.now();
     let staticBackdrop = null;
     let staticBackdropCtx = null;
     let visible = true;
     let resizeTimer = null;
+    let nextShootingStar = 0;
 
     const starPalettes = [
         [238, 255, 255],
@@ -560,7 +562,13 @@ function openFacebook() {
 
         initStars();
         initDust();
+        resetShootingStars();
         buildStaticBackdrop();
+    }
+
+    function resetShootingStars() {
+        shootingStars = [];
+        nextShootingStar = time + rand(0.9, 2.2);
     }
 
     function initStars() {
@@ -1093,6 +1101,90 @@ function openFacebook() {
         ctx.restore();
     }
 
+    function spawnShootingStar() {
+        const mobile = width / dpr < 720;
+        const base = Math.min(width, height);
+        const fromLeft = Math.random() > 0.30;
+        const angle = fromLeft ? rand(0.20, 0.42) : Math.PI - rand(0.20, 0.42);
+        const speed = rand(base * 0.58, base * 0.86);
+        const length = rand(base * 0.16, base * 0.28);
+        const startX = fromLeft ? rand(-width * 0.10, width * 0.38) : rand(width * 0.62, width * 1.10);
+        const startY = mobile ? rand(height * 0.10, height * 0.38) : rand(height * 0.10, height * 0.42);
+
+        shootingStars.push({
+            x: startX,
+            y: startY,
+            vx: Math.cos(angle) * speed,
+            vy: Math.sin(angle) * speed,
+            length,
+            life: 0,
+            maxLife: rand(0.72, 1.08),
+            alpha: rand(0.62, 0.88),
+            width: rand(1.0, 1.8) * dpr,
+            color: Math.random() > 0.35 ? [185, 255, 250] : [100, 224, 255]
+        });
+    }
+
+    function drawShootingStars(delta) {
+        if (time >= nextShootingStar && shootingStars.length < 3) {
+            spawnShootingStar();
+            nextShootingStar = time + rand(2.4, 5.6);
+
+            if (Math.random() > 0.72 && shootingStars.length < 3) {
+                nextShootingStar -= rand(0.9, 1.6);
+            }
+        }
+
+        if (!shootingStars.length) return;
+
+        ctx.save();
+        ctx.globalCompositeOperation = 'lighter';
+
+        shootingStars = shootingStars.filter((star) => {
+            star.life += delta;
+            star.x += star.vx * delta;
+            star.y += star.vy * delta;
+
+            const progress = star.life / star.maxLife;
+            if (progress >= 1 || star.x < -width * 0.25 || star.x > width * 1.25 || star.y > height * 1.08) {
+                return false;
+            }
+
+            const fade = Math.sin(Math.PI * progress);
+            const alpha = star.alpha * fade;
+            const speed = Math.hypot(star.vx, star.vy) || 1;
+            const tx = (star.vx / speed) * star.length;
+            const ty = (star.vy / speed) * star.length;
+            const tail = ctx.createLinearGradient(star.x - tx, star.y - ty, star.x, star.y);
+
+            tail.addColorStop(0, 'rgba(0,0,0,0)');
+            tail.addColorStop(0.24, `rgba(${star.color[0]},${star.color[1]},${star.color[2]},${alpha * 0.08})`);
+            tail.addColorStop(0.78, `rgba(${star.color[0]},${star.color[1]},${star.color[2]},${alpha * 0.46})`);
+            tail.addColorStop(1, `rgba(255,255,255,${alpha})`);
+
+            ctx.strokeStyle = tail;
+            ctx.lineWidth = star.width;
+            ctx.lineCap = 'round';
+            ctx.beginPath();
+            ctx.moveTo(star.x - tx, star.y - ty);
+            ctx.lineTo(star.x, star.y);
+            ctx.stroke();
+
+            const head = ctx.createRadialGradient(star.x, star.y, 0, star.x, star.y, star.width * 5.8);
+            head.addColorStop(0, `rgba(255,255,255,${alpha})`);
+            head.addColorStop(0.42, `rgba(${star.color[0]},${star.color[1]},${star.color[2]},${alpha * 0.35})`);
+            head.addColorStop(1, 'rgba(0,0,0,0)');
+            ctx.fillStyle = head;
+            ctx.beginPath();
+            ctx.arc(star.x, star.y, star.width * 5.8, 0, TAU);
+            ctx.fill();
+
+            return true;
+        });
+
+        ctx.restore();
+    }
+
     function drawLetterboxBlend() {
         const edge = ctx.createLinearGradient(0, 0, 0, height);
         edge.addColorStop(0, 'rgba(0,0,0,0.82)');
@@ -1129,6 +1221,7 @@ function openFacebook() {
                 drawTextSafeVeil();
             }
             drawSolarSystem();
+            drawShootingStars(delta);
             drawLetterboxBlend();
         }
 

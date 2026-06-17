@@ -12342,7 +12342,8 @@ button.btn-primary:active {
   height: auto;
   display: block;
   filter: drop-shadow(0 0 6px rgba(255,255,255,0.28));
-  animation: whatsappGlyph 2.6s ease-in-out infinite;
+  animation: none !important;
+  transform: translateZ(0);
 }
 
 @keyframes whatsappOrbit {
@@ -12803,7 +12804,7 @@ button.btn {
 }
 
 .whatsapp-float img {
-  animation: whatsappGlyph 2.6s ease-in-out infinite !important;
+  animation: none !important;
 }
 
 /* Stronger mobile text sizing in hero/carousel */
@@ -14461,8 +14462,11 @@ button.close:focus-visible {
   font-size: 35px;
   color: #fff;
   display: block;
+  line-height: 1;
   filter: drop-shadow(0 0 6px rgba(255, 255, 255, 0.28));
-  animation: whatsappGlyph 2.6s ease-in-out infinite;
+  animation: none !important;
+  transform: translateZ(0);
+  will-change: filter;
 }
 
 @media (max-width: 991.98px) {

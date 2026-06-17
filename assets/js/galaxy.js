@@ -7,7 +7,7 @@
     const canvas=document.getElementById('lanzahHeroCinemaGalaxy');
     if(!canvas) return;
     const ctx=canvas.getContext('2d');
-    let W,H,cx,cy,stars=[],shooting=[],planets=[],belt=[];
+    let W,H,cx,cy,RX,RY,stars=[],shooting=[],planets=[],belt=[];
     let t=0,tabVisible=true,resizeTimer,grainPat;
     let cam={x:0,y:0},camT={x:0,y:0},isDrag=false,dragP={x:0,y:0},ptId=null;
     const PI2=Math.PI*2,PI=Math.PI,TW=220,TH=110;
@@ -41,8 +41,8 @@
     }
 
     function initBelt(){
-        const sR=Math.min(W,H)*.44,N=W>1400?180:W>800?120:65; belt=[];
-        for(let i=0;i<N;i++) belt.push({a:rnd(0,PI2),d:sR*rnd(.45,.52),dA:rnd(.005,.025),r:rnd(.3,1.1),al:rnd(.12,.42),e:rnd(.48,.58)});
+        const N=W>1400?180:W>800?120:65; belt=[];
+        for(let i=0;i<N;i++) belt.push({a:rnd(0,PI2),fx:rnd(.46,.53),dA:rnd(.005,.025),r:rnd(.3,1.1)});
     }
 
     /* ---------- Texturas procedurales ---------- */
@@ -93,7 +93,7 @@
     }
 
     function initPlanets(){
-        const sR=Math.min(W,H)*.44,S=Math.min(W,H),P=[
+        const S=Math.min(W,H),P=[
             [.12,.065,0,.0085,[140,128,118],[205,196,186],[160,150,140],0,.52,.006,0,.022],
             [.20,.110,.80,.018,[178,142,62],[238,208,132],[210,178,100],0,.37,.008,0,-.013],
             [.29,.158,2.1,.020,[40,92,140],[88,170,162],[64,161,157],0,.25,.010,1,.050],
@@ -104,7 +104,7 @@
             [.93,.512,3.6,.024,[32,62,175],[68,122,212],[50,100,195],0,.024,.028,5,.043]];
         const ringD=[0,0,0,0,0,{t:.32,c:[195,172,122]},{t:.06,c:[100,161,157]},0];
         planets=P.map(([ax,ay,ph,r,col,hi,atm,ri,spd,pf,bands,rot],i)=>{
-            const o={bx:cx,by:cy,ax:sR*ax,ay:sR*ay,ph,r:S*r,col,hi,atm,ring:!!ringD[i],spd,pf,tr:[],bands,rot,
+            const o={bx:cx,by:cy,ax:RX*ax,ay:RY*ay,ph,r:S*r,col,hi,atm,ring:!!ringD[i],spd,pf,tr:[],bands,rot,
                 night:bands===1,spec:bands===1};
             if(ringD[i]){o.ringTilt=ringD[i].t;o.rCol=ringD[i].c;}
             bakeTex(o); return o;
@@ -208,7 +208,7 @@
                     ctx.strokeStyle=sg;ctx.beginPath();ctx.moveTo(x1,y1);ctx.lineTo(x2,y2);ctx.stroke();});ctx.restore();}
         });}
     function drawBelt(){const ox=cam.x*.014,oy=cam.y*.014;ctx.fillStyle='rgba(160,150,140,.35)';
-        belt.forEach(a=>{a.a+=a.dA*.007;ctx.beginPath();ctx.arc(cx+Math.cos(a.a)*a.d+ox,cy+Math.sin(a.a)*a.d*a.e+oy,a.r,0,PI2);ctx.fill();});}
+        belt.forEach(a=>{a.a+=a.dA*.007;ctx.beginPath();ctx.arc(cx+Math.cos(a.a)*RX*a.fx+ox,cy+Math.sin(a.a)*RY*a.fx+oy,a.r,0,PI2);ctx.fill();});}
     function drawTrail(p){const tr=p.tr;if(tr.length<2)return;const ox=cam.x*p.pf,oy=cam.y*p.pf;
         for(let i=1;i<tr.length;i++){const f=i/tr.length;ctx.beginPath();ctx.moveTo(tr[i-1].x+ox,tr[i-1].y+oy);ctx.lineTo(tr[i].x+ox,tr[i].y+oy);
             ctx.strokeStyle=`rgba(${p.atm[0]},${p.atm[1]},${p.atm[2]},${f*.30})`;ctx.lineWidth=Math.max(.3,p.r*f*.14);ctx.stroke();}}
@@ -282,7 +282,7 @@
         const sw=st.offsetWidth||window.innerWidth,sh=st.offsetHeight||window.innerHeight;
         W=sw*dpr;H=sh*dpr;canvas.width=W;canvas.height=H;
         canvas.style.width=sw+'px';canvas.style.height=sh+'px';
-        cx=W/2;cy=H/2;initStars();initPlanets();initBelt();initGrain();
+        cx=W/2;cy=H/2;RX=W*.48;RY=H*.44;initStars();initPlanets();initBelt();initGrain();
     }
 
     const stage=canvas.parentElement;

@@ -14526,23 +14526,21 @@ button.btn-primary:focus-visible {
 }
 
 /* =========================
-   GALAXIA ANIMADA — SECCIÓN ABOUT
+   GALAXIA HERO — FONDO ANIMADO
    ========================= */
 
-.galaxy-container {
-  width: 100%;
-  max-width: 480px;
-  display: block;
+/* Anula fondo.jpg — el canvas lo reemplaza */
+#hero.lanzah-hero .lanzah-hero-stage::before,
+.lanzah-hero .lanzah-hero-stage::before {
+  background: none !important;
+  background-image: none !important;
 }
 
-#lanzahGalaxy {
+#lanzahHeroGalaxy {
+  position: absolute !important;
+  inset: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  z-index: 1 !important;
   display: block;
-  border-radius: 10px;
-  filter: drop-shadow(0 0 28px rgba(0, 229, 255, 0.14));
-}
-
-@media (prefers-reduced-motion: reduce) {
-  #lanzahGalaxy {
-    animation: none !important;
-  }
 }

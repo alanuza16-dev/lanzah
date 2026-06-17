@@ -59,13 +59,16 @@
         const tc=newC(),c=tc.getContext('2d'),b=p.bands,col=p.col,hi=p.hi;
         const mid=`${(col[0]+hi[0])>>1},${(col[1]+hi[1])>>1},${(col[2]+hi[2])>>1}`;
         c.fillStyle=`rgb(${col.join(',')})`;c.fillRect(0,0,TW,TH);
-        if(b===3||b===4){ // Júpiter / Saturno: franjas + turbulencia
-            const N=b===3?15:12;
-            for(let i=0;i<N;i++){const y=TH*i/N,h=TH/N+1,t1=i%2,base=t1?hi:col;
-                const sh=base.map(v=>Math.max(0,Math.min(255,v+(t1?14:-22)+rnd(-10,10))));
-                c.fillStyle=`rgb(${sh.join(',')})`;c.fillRect(0,y,TW,h);}
-            for(let i=0;i<46;i++)blobE(c,Math.random()*TW,Math.random()*TH,rnd(9,28),rnd(2,5),mid,rnd(.10,.28));
-            if(b===3)blobE(c,TW*.62,TH*.63,19,12,'205,110,78',.9); // Gran Mancha Roja
+        if(b===3||b===4){ // Júpiter / Saturno: franjas suaves + mucha turbulencia
+            const N=b===3?12:10,cl=v=>Math.max(0,Math.min(255,v|0));
+            c.save();c.filter='blur(2.6px)';
+            for(let i=0;i<N;i++){const y=TH*i/N,h=TH/N+3,t1=i%2,base=t1?hi:col;
+                const sh=base.map(v=>cl(v+(t1?7:-11)+rnd(-5,5)));
+                c.fillStyle=`rgb(${sh.join(',')})`;c.fillRect(-3,y-1,TW+6,h);}
+            c.restore();
+            for(let i=0;i<92;i++){const tn=Math.random()<.5?hi:col,sh=tn.map(v=>cl(v+rnd(-16,16)));
+                blobE(c,Math.random()*TW,Math.random()*TH,rnd(14,40),rnd(2,5),sh.join(','),rnd(.05,.14));}
+            if(b===3){blobE(c,TW*.62,TH*.62,21,12,'200,108,76',.7);blobE(c,TW*.62,TH*.62,12,7,'232,150,110',.45);}
         }else if(b===1){ // Tierra
             c.fillStyle='rgb(26,76,118)';c.fillRect(0,0,TW,TH);
             const land=['46,112,64','74,124,58','122,112,70','58,100,58'];

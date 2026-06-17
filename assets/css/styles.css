@@ -12658,13 +12658,13 @@ li,
 
 #mainNav .nav-pill-container::before {
   background: linear-gradient(120deg,
-      rgba(255,255,255,0.18),
-      rgba(114,236,255,0.55),
-      rgba(160,255,214,0.30),
-      rgba(255,255,255,0.12),
-      rgba(114,236,255,0.42)) !important;
+      rgba(255,255,255,0.10),
+      rgba(114,236,255,0.20),
+      rgba(160,255,214,0.11),
+      rgba(255,255,255,0.06),
+      rgba(114,236,255,0.16)) !important;
   background-size: 240% 240% !important;
-  animation: pillBorderMove 7s linear infinite !important;
+  animation: pillBorderMove 9s linear infinite !important;
 }
 
 #mainNav .nav-pill-container::after {
@@ -12729,7 +12729,7 @@ button.btn {
   font-weight: 700 !important;
   letter-spacing: 0.04em !important;
   text-transform: uppercase !important;
-  border: 1px solid rgba(100, 161, 157, 0.45) !important;
+  border: 1px solid rgba(100, 161, 157, 0.28) !important;
 }
 
 .btn-primary,

@@ -295,17 +295,18 @@ function openFacebook() {
     }
 
     function initPlanets(){
-        const sR=Math.min(W,H)*.44,S=Math.min(W,H),P=[[.12,.065,0,.006,[130,118,108],[195,185,175],[150,140,130],0,.52,.006],
-            [.20,.110,.80,.013,[195,158,80],[242,212,145],[220,190,120],0,.37,.008],
-            [.29,.158,2.1,.014,[28,78,168],[78,162,228],[0,155,255],0,.25,.010],
-            [.40,.218,1.3,.009,[155,55,22],[215,108,68],[190,88,52],0,.175,.012],
-            [.54,.295,4.5,.030,[162,122,72],[218,182,132],[198,162,108],0,.090,.016],
-            [.67,.368,2.8,.026,[182,156,98],[228,200,152],[200,175,122],1,.060,.020],
-            [.80,.440,.50,.018,[95,182,192],[148,218,228],[112,208,218],2,.038,.024],
-            [.93,.512,3.6,.017,[22,72,198],[72,135,252],[45,92,228],0,.024,.028]];
-        const ringD=[0,0,0,0,0,{t:.32,c:[205,178,128]},{t:.06,c:[140,218,228]},0];
-        planets=P.map(([ax,ay,ph,r,col,hi,atm,ri,spd,pf],i)=>{
-            const o={bx:cx,by:cy,ax:sR*ax,ay:sR*ay,ph,r:S*r,col,hi,atm,ring:!!ringD[i],spd,pf,tr:[]};
+        const sR=Math.min(W,H)*.44,S=Math.min(W,H),P=[
+            [.12,.065,0,.006,[140,128,118],[200,192,182],[160,150,140],0,.52,.006,0],
+            [.20,.110,.80,.013,[178,142,62],[235,205,130],[210,178,100],0,.37,.008,0],
+            [.29,.158,2.1,.014,[45,95,145],[80,160,155],[64,161,157],0,.25,.010,1],
+            [.40,.218,1.3,.009,[162,68,32],[218,118,72],[195,95,55],0,.175,.012,2],
+            [.54,.295,4.5,.030,[152,118,68],[210,175,125],[185,152,100],0,.090,.016,3],
+            [.67,.368,2.8,.026,[175,150,95],[222,198,148],[195,170,118],1,.060,.020,4],
+            [.80,.440,.50,.018,[82,168,162],[130,205,198],[100,161,157],2,.038,.024,0],
+            [.93,.512,3.6,.017,[32,62,175],[65,120,210],[50,100,195],0,.024,.028,5]];
+        const ringD=[0,0,0,0,0,{t:.32,c:[195,172,122]},{t:.06,c:[100,161,157]},0];
+        planets=P.map(([ax,ay,ph,r,col,hi,atm,ri,spd,pf,bands],i)=>{
+            const o={bx:cx,by:cy,ax:sR*ax,ay:sR*ay,ph,r:S*r,col,hi,atm,ring:!!ringD[i],spd,pf,tr:[],bands};
             if(ringD[i]){o.ringTilt=ringD[i].t;o.rCol=ringD[i].c;} return o;
         });
     }
@@ -416,23 +417,37 @@ function openFacebook() {
         p.tr.push({x:bx,y:by});if(p.tr.length>50)p.tr.shift();
         const r=p.r,ox=cam.x*p.pf,oy=cam.y*p.pf,px=bx+ox,py=by+oy;
         drawTrail(p);
-        const atm=ctx.createRadialGradient(px,py,r*.80,px,py,r*1.65);
-        atm.addColorStop(0,`rgba(${p.atm[0]},${p.atm[1]},${p.atm[2]},.24)`);atm.addColorStop(1,'transparent');
-        ctx.fillStyle=atm;ctx.beginPath();ctx.arc(px,py,r*1.65,0,PI2);ctx.fill();
+        const atm=ctx.createRadialGradient(px,py,r*.82,px,py,r*1.45);
+        atm.addColorStop(0,`rgba(${p.atm[0]},${p.atm[1]},${p.atm[2]},.18)`);atm.addColorStop(1,'transparent');
+        ctx.fillStyle=atm;ctx.beginPath();ctx.arc(px,py,r*1.45,0,PI2);ctx.fill();
         if(p.ring){const rC=p.rCol;ctx.save();ctx.translate(px,py);ctx.rotate(-p.ringTilt);
-            for(let i=3;i>=1;i--){ctx.beginPath();ctx.ellipse(0,0,r*(1.6+i*.26),r*(.26+i*.06),0,0,PI2);ctx.strokeStyle=`rgba(${rC[0]},${rC[1]},${rC[2]},${.09+i*.08})`;ctx.lineWidth=r*(.09+i*.04);ctx.stroke();}
+            for(let i=3;i>=1;i--){ctx.beginPath();ctx.ellipse(0,0,r*(1.6+i*.26),r*(.26+i*.06),0,0,PI2);ctx.strokeStyle=`rgba(${rC[0]},${rC[1]},${rC[2]},${.07+i*.06})`;ctx.lineWidth=r*(.08+i*.04);ctx.stroke();}
             ctx.restore();}
         const mid=[Math.round((p.hi[0]+p.col[0])*.5),Math.round((p.hi[1]+p.col[1])*.5),Math.round((p.hi[2]+p.col[2])*.5)];
-        const lg=ctx.createRadialGradient(px+r*.40,py-r*.40,0,px,py,r);
-        lg.addColorStop(0,`rgb(${p.hi[0]},${p.hi[1]},${p.hi[2]})`);lg.addColorStop(.42,`rgb(${mid[0]},${mid[1]},${mid[2]})`);lg.addColorStop(1,`rgb(${p.col[0]},${p.col[1]},${p.col[2]})`);
-        ctx.beginPath();ctx.arc(px,py,r,0,PI2);ctx.fillStyle=lg;ctx.fill();
-        const sh=ctx.createRadialGradient(px-r*.28,py+r*.28,0,px,py,r);
-        sh.addColorStop(.38,'transparent');sh.addColorStop(1,'rgba(0,0,0,.84)');
+        const lg=ctx.createRadialGradient(px+r*.38,py-r*.38,0,px,py,r);
+        lg.addColorStop(0,`rgb(${p.hi[0]},${p.hi[1]},${p.hi[2]})`);lg.addColorStop(.40,`rgb(${mid[0]},${mid[1]},${mid[2]})`);lg.addColorStop(1,`rgb(${p.col[0]},${p.col[1]},${p.col[2]})`);
+        ctx.save();ctx.beginPath();ctx.arc(px,py,r,0,PI2);ctx.clip();
+        ctx.fillStyle=lg;ctx.fillRect(px-r,py-r,r*2,r*2);
+        if(p.bands===1){ctx.globalAlpha=.12;ctx.fillStyle='rgba(40,110,100,.6)';
+            ctx.fillRect(px-r,py-r*.15,r*2,r*.22);ctx.fillRect(px-r,py+r*.25,r*2,r*.18);
+            ctx.fillStyle='rgba(255,255,255,.25)';ctx.beginPath();ctx.arc(px+r*.15,py-r*.65,r*.22,0,PI2);ctx.fill();}
+        if(p.bands===2){ctx.globalAlpha=.15;ctx.fillStyle='rgba(255,220,180,.35)';
+            ctx.beginPath();ctx.arc(px+r*.1,py-r*.72,r*.18,0,PI2);ctx.fill();}
+        if(p.bands>=3&&p.bands<=4){ctx.globalAlpha=.16;
+            const bN=p.bands===3?6:5,bC=p.bands===3?[140,105,60]:[165,140,85];
+            for(let i=0;i<bN;i++){const yy=py-r+r*2*(i/(bN-1)),bh=r*(.08+.04*Math.sin(i*2.1));
+                ctx.fillStyle=`rgba(${bC[0]+(i%2)*25},${bC[1]+(i%2)*20},${bC[2]+(i%2)*15},.${3+i%3})`;
+                ctx.fillRect(px-r,yy-bh/2,r*2,bh);}}
+        if(p.bands===5){ctx.globalAlpha=.14;ctx.fillStyle='rgba(30,55,160,.4)';
+            ctx.fillRect(px-r,py+r*.2,r*2,r*.15);ctx.fillRect(px-r,py-r*.4,r*2,r*.12);}
+        ctx.restore();
+        const sh=ctx.createRadialGradient(px-r*.30,py+r*.30,0,px,py,r);
+        sh.addColorStop(.35,'transparent');sh.addColorStop(1,'rgba(0,0,0,.86)');
         ctx.beginPath();ctx.arc(px,py,r,0,PI2);ctx.fillStyle=sh;ctx.fill();
-        const rim=ctx.createRadialGradient(px,py,r*.78,px,py,r*1.08);
-        rim.addColorStop(0,'transparent');rim.addColorStop(1,`rgba(${p.atm[0]},${p.atm[1]},${p.atm[2]},.35)`);
-        ctx.beginPath();ctx.arc(px,py,r*1.08,0,PI2);ctx.fillStyle=rim;ctx.fill();
-        if(p.ring){const rC=p.rCol;ctx.save();ctx.translate(px,py);ctx.rotate(-p.ringTilt);ctx.beginPath();ctx.ellipse(0,0,r*2.2,r*.48,0,PI,PI2);ctx.strokeStyle=`rgba(${rC[0]},${rC[1]},${rC[2]},.30)`;ctx.lineWidth=r*.20;ctx.stroke();ctx.restore();}
+        const rim=ctx.createRadialGradient(px,py,r*.78,px,py,r*1.05);
+        rim.addColorStop(0,'transparent');rim.addColorStop(1,`rgba(${p.atm[0]},${p.atm[1]},${p.atm[2]},.28)`);
+        ctx.beginPath();ctx.arc(px,py,r*1.05,0,PI2);ctx.fillStyle=rim;ctx.fill();
+        if(p.ring){const rC=p.rCol;ctx.save();ctx.translate(px,py);ctx.rotate(-p.ringTilt);ctx.beginPath();ctx.ellipse(0,0,r*2.2,r*.48,0,PI,PI2);ctx.strokeStyle=`rgba(${rC[0]},${rC[1]},${rC[2]},.28)`;ctx.lineWidth=r*.18;ctx.stroke();ctx.restore();}
     }
 
     function tickShootingStars(){

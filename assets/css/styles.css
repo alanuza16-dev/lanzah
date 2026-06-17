@@ -12739,8 +12739,8 @@ button.btn {
   color: #ffffff !important;
   background: linear-gradient(135deg, rgba(100,161,157,0.96) 0%, rgba(55,98,96,0.96) 100%) !important;
   box-shadow:
-    0 10px 24px rgba(100,161,157,0.22),
-    inset 0 1px 0 rgba(255,255,255,0.12) !important;
+    0 4px 12px rgba(0,0,0,0.25),
+    inset 0 1px 0 rgba(255,255,255,0.08) !important;
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   min-width: 180px;
@@ -12757,8 +12757,7 @@ button.btn {
   background: linear-gradient(135deg, rgba(123,194,190,0.98) 0%, rgba(64,114,111,0.98) 100%) !important;
   border-color: rgba(130, 201, 196, 0.55) !important;
   box-shadow:
-    0 16px 34px rgba(100,161,157,0.28),
-    0 0 18px rgba(100,161,157,0.10) !important;
+    0 8px 20px rgba(0,0,0,0.30) !important;
 }
 
 .btn-primary:focus,
@@ -12771,7 +12770,7 @@ button.btn {
 .projects-section .btn:active {
   color: #ffffff !important;
   background: linear-gradient(135deg, rgba(95,153,149,0.98) 0%, rgba(70,114,111,0.98) 100%) !important;
-  box-shadow: 0 0 0 0.18rem rgba(100,161,157,0.18), 0 12px 28px rgba(100,161,157,0.20) !important;
+  box-shadow: 0 0 0 0.15rem rgba(100,161,157,0.12), 0 4px 12px rgba(0,0,0,0.25) !important;
 }
 
 @media (max-width: 767.98px) {
@@ -14603,11 +14602,11 @@ body {
   background: linear-gradient(
     180deg,
     #000000 0%,
-    #05050d 14%,
-    #090915 28%,
-    #0b0b1a 42%,
-    #080810 60%,
-    #040408 80%,
+    #0a0a0a 14%,
+    #121212 28%,
+    #151515 42%,
+    #101010 60%,
+    #080808 80%,
     #000000 100%
   ) fixed !important;
 }
@@ -14656,7 +14655,7 @@ body {
   position: absolute;
   inset: 0;
   border-radius: inherit;
-  background: radial-gradient(ellipse at 50% -10%, rgba(100,161,157,0.14) 0%, transparent 68%);
+  background: radial-gradient(ellipse at 50% -10%, rgba(100,161,157,0.06) 0%, transparent 60%);
   opacity: 0;
   transition: opacity 0.4s ease;
   pointer-events: none;
@@ -14666,10 +14665,10 @@ body {
 .item.svc-card:hover::before { opacity: 1; }
 
 .item.svc-card:hover {
-  transform: translateY(-8px);
-  background: rgba(255,255,255,0.05);
-  box-shadow: 0 24px 52px rgba(0,0,0,0.5), 0 0 0 1px rgba(100,161,157,0.26);
-  border-color: rgba(100,161,157,0.28);
+  transform: translateY(-6px);
+  background: rgba(255,255,255,0.04);
+  box-shadow: 0 16px 36px rgba(0,0,0,0.45);
+  border-color: rgba(255,255,255,0.14);
 }
 
 .svc-card__icon {

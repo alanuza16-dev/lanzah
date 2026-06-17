@@ -524,23 +524,23 @@ function openFacebook() {
     let pointer = { x: 0, y: 0, tx: 0, ty: 0 };
 
     const starPalettes = [
-        [255, 248, 220],
-        [180, 210, 255],
-        [95, 205, 255],
-        [235, 242, 255],
-        [255, 214, 154],
-        [120, 232, 255]
+        [238, 255, 255],
+        [165, 244, 255],
+        [91, 214, 223],
+        [69, 177, 226],
+        [111, 222, 255],
+        [96, 150, 255]
     ];
 
     const planets = [
-        { name: 'Mercurio', orbit: 0.18, size: 2.0, speed: 0.88, phase: 0.2, color: [174, 164, 145], glow: [240, 225, 190] },
-        { name: 'Venus', orbit: 0.24, size: 3.2, speed: 0.68, phase: 1.1, color: [220, 173, 105], glow: [255, 220, 150] },
-        { name: 'Tierra', orbit: 0.31, size: 3.6, speed: 0.54, phase: 2.2, color: [42, 132, 210], glow: [90, 210, 255], moon: true },
-        { name: 'Marte', orbit: 0.38, size: 2.8, speed: 0.44, phase: 3.2, color: [205, 87, 58], glow: [255, 132, 95] },
-        { name: 'J\u00fapiter', orbit: 0.50, size: 8.1, speed: 0.30, phase: 4.0, color: [211, 166, 112], glow: [255, 228, 175], bands: true },
-        { name: 'Saturno', orbit: 0.62, size: 7.1, speed: 0.23, phase: 5.0, color: [214, 188, 128], glow: [255, 238, 180], ring: true },
-        { name: 'Urano', orbit: 0.74, size: 5.1, speed: 0.18, phase: 5.8, color: [128, 218, 225], glow: [155, 248, 255], ring: true, ringSoft: true },
-        { name: 'Neptuno', orbit: 0.85, size: 5.0, speed: 0.14, phase: 0.9, color: [54, 102, 226], glow: [88, 170, 255] }
+        { orbit: 0.16, size: 1.7, speed: 0.88, phase: 0.2, color: [164, 186, 195], glow: [160, 244, 255] },
+        { orbit: 0.23, size: 2.7, speed: 0.68, phase: 1.1, color: [166, 222, 218], glow: [126, 236, 226] },
+        { orbit: 0.31, size: 3.4, speed: 0.54, phase: 2.2, color: [35, 146, 214], glow: [100, 222, 255], moon: true },
+        { orbit: 0.39, size: 2.4, speed: 0.44, phase: 3.2, color: [139, 181, 185], glow: [100, 214, 205] },
+        { orbit: 0.51, size: 7.2, speed: 0.30, phase: 4.0, color: [148, 206, 218], glow: [142, 244, 255], bands: true },
+        { orbit: 0.63, size: 6.5, speed: 0.23, phase: 5.0, color: [184, 224, 214], glow: [148, 244, 230], ring: true },
+        { orbit: 0.75, size: 4.8, speed: 0.18, phase: 5.8, color: [106, 222, 224], glow: [134, 252, 255], ring: true, ringSoft: true },
+        { orbit: 0.86, size: 4.7, speed: 0.14, phase: 0.9, color: [49, 118, 224], glow: [76, 188, 255] }
     ];
 
     function resize() {
@@ -561,20 +561,21 @@ function openFacebook() {
     }
 
     function initStars() {
-        const count = width > 1800 ? 6200 : width > 1000 ? 4400 : 2600;
-        const cx = width * 0.48;
-        const cy = height * 0.46;
-        const radius = Math.min(width, height) * 0.52;
+        const count = width > 1800 ? 7600 : width > 1000 ? 5600 : 3200;
+        const galaxy = getGalaxy();
+        const cx = galaxy.x;
+        const cy = galaxy.y;
+        const radius = galaxy.radius;
 
         stars = [];
 
         for (let i = 0; i < count; i += 1) {
-            const inArm = Math.random() > 0.30;
+            const inArm = Math.random() > 0.25;
             const arm = Math.random() > 0.5 ? 0 : Math.PI;
-            const angle = inArm ? rand(0.25, TAU * 1.85) : rand(0, TAU);
-            const spiral = inArm ? 0.62 * Math.exp(0.18 * angle) : Math.pow(Math.random(), 0.6);
-            const r = inArm ? radius * 0.14 * spiral : radius * rand(0.12, 1.08);
-            const spread = inArm ? rand(-radius * 0.065, radius * 0.065) : rand(-radius * 0.28, radius * 0.28);
+            const angle = inArm ? rand(0.18, TAU * 1.92) : rand(0, TAU);
+            const spiral = inArm ? 0.56 * Math.exp(0.18 * angle) : Math.pow(Math.random(), 0.58);
+            const r = inArm ? radius * 0.14 * spiral : radius * rand(0.10, 1.08);
+            const spread = inArm ? rand(-radius * 0.080, radius * 0.080) : rand(-radius * 0.30, radius * 0.30);
             const a = inArm ? angle + arm + rand(-0.12, 0.12) : angle;
             const color = starPalettes[Math.floor(Math.random() * starPalettes.length)];
 
@@ -585,7 +586,7 @@ function openFacebook() {
                 angle: a,
                 color,
                 size: inArm ? rand(0.18, 1.35) : rand(0.12, 0.8),
-                alpha: inArm ? rand(0.35, 0.95) : rand(0.08, 0.45),
+                alpha: inArm ? rand(0.30, 0.92) : rand(0.07, 0.42),
                 spin: inArm ? rand(0.0012, 0.004) : rand(0.0002, 0.001),
                 twinkle: rand(0, TAU),
                 depth: rand(0.10, 1.0),
@@ -596,7 +597,7 @@ function openFacebook() {
 
     function initDust() {
         dust = [];
-        const radius = Math.min(width, height) * 0.50;
+        const radius = getGalaxy().radius * 0.96;
 
         for (let arm = 0; arm < 2; arm += 1) {
             for (let i = 0; i < 140; i += 1) {
@@ -605,27 +606,44 @@ function openFacebook() {
                 dust.push({
                     angle: angle + arm * Math.PI,
                     orbit: r,
-                    width: rand(18, 54) * dpr,
-                    alpha: rand(0.035, 0.11)
+                    width: rand(22, 68) * dpr,
+                    alpha: rand(0.045, 0.15)
                 });
             }
         }
     }
 
+    function getGalaxy() {
+        const mobile = width / dpr < 720;
+        return {
+            x: width * 0.50,
+            y: mobile ? height * 0.43 : height * 0.45,
+            radius: Math.min(width, height) * (mobile ? 0.58 : 0.64),
+            flatness: mobile ? 0.46 : 0.43
+        };
+    }
+
     function drawBackground() {
         const bg = ctx.createLinearGradient(0, 0, width, height);
-        bg.addColorStop(0, '#02030a');
-        bg.addColorStop(0.28, '#030714');
-        bg.addColorStop(0.58, '#01030a');
+        bg.addColorStop(0, '#00030a');
+        bg.addColorStop(0.30, '#031223');
+        bg.addColorStop(0.58, '#020711');
         bg.addColorStop(1, '#000106');
         ctx.fillStyle = bg;
         ctx.fillRect(0, 0, width, height);
 
+        const brandBloom = ctx.createRadialGradient(width * 0.50, height * 0.43, 0, width * 0.50, height * 0.43, Math.min(width, height) * 0.84);
+        brandBloom.addColorStop(0, 'rgba(103,232,224,0.14)');
+        brandBloom.addColorStop(0.38, 'rgba(42,151,205,0.08)');
+        brandBloom.addColorStop(1, 'rgba(0,0,0,0)');
+        ctx.fillStyle = brandBloom;
+        ctx.fillRect(0, 0, width, height);
+
         const topFade = ctx.createLinearGradient(0, 0, 0, height);
-        topFade.addColorStop(0, 'rgba(0,0,0,0.62)');
-        topFade.addColorStop(0.18, 'rgba(0,0,0,0.05)');
-        topFade.addColorStop(0.72, 'rgba(0,0,0,0.04)');
-        topFade.addColorStop(1, 'rgba(0,0,0,0.72)');
+        topFade.addColorStop(0, 'rgba(0,0,0,0.72)');
+        topFade.addColorStop(0.20, 'rgba(0,0,0,0.10)');
+        topFade.addColorStop(0.72, 'rgba(0,0,0,0.02)');
+        topFade.addColorStop(1, 'rgba(0,0,0,0.82)');
         ctx.fillStyle = topFade;
         ctx.fillRect(0, 0, width, height);
     }
@@ -634,11 +652,11 @@ function openFacebook() {
         const driftX = pointer.x * 0.35 + Math.sin(time * 0.035) * width * 0.018;
         const driftY = pointer.y * 0.25 + Math.cos(time * 0.030) * height * 0.016;
         const layers = [
-            [0.44, 0.44, 0.44, '25,145,225', 0.10],
-            [0.56, 0.48, 0.34, '0,205,240', 0.08],
-            [0.34, 0.56, 0.28, '95,125,255', 0.06],
-            [0.66, 0.36, 0.22, '255,198,110', 0.045],
-            [0.72, 0.62, 0.24, '0,105,190', 0.055]
+            [0.40, 0.42, 0.46, '63,174,226', 0.13],
+            [0.52, 0.44, 0.38, '103,232,224', 0.12],
+            [0.60, 0.50, 0.34, '46,124,214', 0.08],
+            [0.34, 0.58, 0.30, '67,213,205', 0.06],
+            [0.72, 0.60, 0.26, '25,83,157', 0.07]
         ];
 
         layers.forEach(([x, y, radius, color, alpha]) => {
@@ -654,16 +672,17 @@ function openFacebook() {
     }
 
     function drawCore() {
-        const cx = width * 0.48 + pointer.x * 0.16;
-        const cy = height * 0.46 + pointer.y * 0.12;
+        const galaxy = getGalaxy();
+        const cx = galaxy.x + pointer.x * 0.16;
+        const cy = galaxy.y + pointer.y * 0.12;
         const base = Math.min(width, height);
-        const pulse = 1 + Math.sin(time * 0.55) * 0.025;
+        const pulse = 1 + Math.sin(time * 0.55) * 0.030;
         const rings = [
-            [base * 0.55 * pulse, 'rgba(20,80,175,0.08)'],
-            [base * 0.34 * pulse, 'rgba(0,190,255,0.10)'],
-            [base * 0.22 * pulse, 'rgba(255,205,105,0.18)'],
-            [base * 0.115 * pulse, 'rgba(255,238,170,0.34)'],
-            [base * 0.040 * pulse, 'rgba(255,255,230,0.82)']
+            [base * 0.62 * pulse, 'rgba(17,90,180,0.10)'],
+            [base * 0.40 * pulse, 'rgba(32,196,220,0.13)'],
+            [base * 0.25 * pulse, 'rgba(105,235,226,0.18)'],
+            [base * 0.125 * pulse, 'rgba(185,255,250,0.34)'],
+            [base * 0.042 * pulse, 'rgba(245,255,255,0.82)']
         ];
 
         rings.forEach(([radius, color]) => {
@@ -678,11 +697,25 @@ function openFacebook() {
             ctx.fill();
             ctx.restore();
         });
+
+        const flare = ctx.createLinearGradient(cx - base * 0.54, cy, cx + base * 0.54, cy);
+        flare.addColorStop(0, 'rgba(0,0,0,0)');
+        flare.addColorStop(0.34, 'rgba(65,190,232,0.045)');
+        flare.addColorStop(0.50, 'rgba(215,255,255,0.18)');
+        flare.addColorStop(0.66, 'rgba(65,220,210,0.045)');
+        flare.addColorStop(1, 'rgba(0,0,0,0)');
+        ctx.save();
+        ctx.translate(0, cy);
+        ctx.scale(1, 0.18);
+        ctx.fillStyle = flare;
+        ctx.fillRect(cx - base * 0.58, -base * 0.30, base * 1.16, base * 0.60);
+        ctx.restore();
     }
 
     function drawDust() {
-        const cx = width * 0.48 + pointer.x * 0.25;
-        const cy = height * 0.46 + pointer.y * 0.20;
+        const galaxy = getGalaxy();
+        const cx = galaxy.x + pointer.x * 0.25;
+        const cy = galaxy.y + pointer.y * 0.20;
         const rotate = time * 0.016;
 
         ctx.save();
@@ -700,8 +733,9 @@ function openFacebook() {
     }
 
     function drawStars(delta) {
-        const cx = width * 0.48 + pointer.x * 0.22;
-        const cy = height * 0.46 + pointer.y * 0.18;
+        const galaxy = getGalaxy();
+        const cx = galaxy.x + pointer.x * 0.22;
+        const cy = galaxy.y + pointer.y * 0.18;
 
         stars.forEach((star) => {
             star.twinkle += delta * (0.6 + star.depth);
@@ -734,10 +768,10 @@ function openFacebook() {
         const mobile = width / dpr < 720;
         const scale = Math.min(width, height);
         return {
-            x: mobile ? width * 0.50 : width * 0.72,
-            y: mobile ? height * 0.72 : height * 0.58,
-            radius: mobile ? scale * 0.31 : scale * 0.34,
-            yScale: mobile ? 0.34 : 0.42
+            x: mobile ? width * 0.50 : width * 0.57,
+            y: mobile ? height * 0.72 : height * 0.64,
+            radius: mobile ? scale * 0.30 : scale * 0.32,
+            yScale: mobile ? 0.32 : 0.36
         };
     }
 
@@ -749,7 +783,7 @@ function openFacebook() {
         ctx.translate(system.x, system.y);
         ctx.beginPath();
         ctx.ellipse(0, 0, rx, ry, 0, 0, TAU);
-        ctx.strokeStyle = 'rgba(160,220,255,0.075)';
+        ctx.strokeStyle = 'rgba(113,231,224,0.085)';
         ctx.lineWidth = Math.max(0.7, dpr * 0.8);
         ctx.stroke();
 
@@ -761,7 +795,7 @@ function openFacebook() {
             if (i === 0) ctx.moveTo(x, y);
             else ctx.lineTo(x, y);
         }
-        ctx.strokeStyle = 'rgba(100,210,255,0.22)';
+        ctx.strokeStyle = 'rgba(103,232,224,0.24)';
         ctx.lineWidth = Math.max(0.9, planet.size * dpr * 0.08);
         ctx.stroke();
         ctx.restore();
@@ -792,7 +826,7 @@ function openFacebook() {
             ctx.rotate(-0.22);
             ctx.beginPath();
             ctx.ellipse(0, 0, radius * 2.15, radius * (planet.ringSoft ? 0.42 : 0.35), 0, 0, TAU);
-            ctx.strokeStyle = planet.ringSoft ? 'rgba(155,248,255,0.30)' : 'rgba(255,232,180,0.48)';
+            ctx.strokeStyle = planet.ringSoft ? 'rgba(155,248,255,0.34)' : 'rgba(174,248,236,0.42)';
             ctx.lineWidth = Math.max(1, radius * 0.22);
             ctx.stroke();
             ctx.restore();
@@ -813,7 +847,7 @@ function openFacebook() {
             ctx.arc(x, y, radius, 0, TAU);
             ctx.clip();
             for (let i = -2; i <= 2; i += 1) {
-                ctx.fillStyle = i % 2 === 0 ? 'rgba(255,245,215,0.22)' : 'rgba(90,50,30,0.18)';
+                ctx.fillStyle = i % 2 === 0 ? 'rgba(220,255,252,0.22)' : 'rgba(18,82,105,0.20)';
                 ctx.fillRect(x - radius, y + i * radius * 0.26, radius * 2, radius * 0.14);
             }
             ctx.restore();
@@ -828,12 +862,6 @@ function openFacebook() {
             ctx.fill();
         }
 
-        if (width / dpr > 760) {
-            ctx.font = `${Math.max(9, 10 * dpr)}px Nunito, sans-serif`;
-            ctx.textAlign = 'center';
-            ctx.fillStyle = 'rgba(235,248,255,0.62)';
-            ctx.fillText(planet.name, x, y + radius + 15 * dpr);
-        }
     }
 
     function drawSolarSystem() {
@@ -841,21 +869,25 @@ function openFacebook() {
         const sunPulse = 1 + Math.sin(time * 0.9) * 0.06;
         const sunR = Math.max(7 * dpr, system.radius * 0.035) * sunPulse;
 
+        ctx.save();
+        ctx.globalAlpha = width / dpr < 720 ? 0.64 : 0.72;
+
         const sunGlow = ctx.createRadialGradient(system.x, system.y, 0, system.x, system.y, sunR * 7.5);
-        sunGlow.addColorStop(0, 'rgba(255,244,190,0.78)');
-        sunGlow.addColorStop(0.20, 'rgba(255,188,80,0.24)');
-        sunGlow.addColorStop(1, 'rgba(255,120,40,0)');
+        sunGlow.addColorStop(0, 'rgba(236,255,255,0.78)');
+        sunGlow.addColorStop(0.20, 'rgba(103,232,224,0.26)');
+        sunGlow.addColorStop(1, 'rgba(45,151,218,0)');
         ctx.fillStyle = sunGlow;
         ctx.beginPath();
         ctx.arc(system.x, system.y, sunR * 7.5, 0, TAU);
         ctx.fill();
 
-        ctx.fillStyle = 'rgba(255,245,210,0.95)';
+        ctx.fillStyle = 'rgba(244,255,255,0.92)';
         ctx.beginPath();
         ctx.arc(system.x, system.y, sunR, 0, TAU);
         ctx.fill();
 
         planets.forEach((planet) => drawPlanet(system, planet));
+        ctx.restore();
     }
 
     function drawLetterboxBlend() {

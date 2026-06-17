@@ -14554,11 +14554,40 @@ button.btn-primary:focus-visible {
   z-index: 1 !important;
   display: block;
   pointer-events: none !important;
-  background: #02030a;
+  background:
+    radial-gradient(circle at 50% 42%, rgba(103, 232, 224, 0.12), transparent 42%),
+    linear-gradient(135deg, #00030a 0%, #031223 42%, #000106 100%);
+  filter: saturate(1.12) contrast(1.08);
 }
 
 #hero .lanzah-panel-shade {
   background:
-    linear-gradient(180deg, rgba(0, 0, 0, 0.30) 0%, rgba(0, 0, 0, 0.18) 42%, rgba(0, 0, 0, 0.62) 100%),
-    radial-gradient(circle at center, rgba(255, 255, 255, 0.04) 0%, rgba(0, 0, 0, 0.12) 40%, rgba(0, 0, 0, 0.56) 100%) !important;
+    radial-gradient(circle at 50% 48%, rgba(255, 255, 255, 0.025) 0%, rgba(0, 0, 0, 0.08) 42%, rgba(0, 0, 0, 0.58) 100%),
+    radial-gradient(circle at 50% 62%, rgba(103, 232, 224, 0.08) 0%, rgba(0, 0, 0, 0) 34%),
+    linear-gradient(180deg, rgba(0, 0, 0, 0.48) 0%, rgba(0, 0, 0, 0.12) 38%, rgba(0, 0, 0, 0.72) 100%) !important;
+}
+
+#hero .lanzah-hero-panel,
+.lanzah-hero .lanzah-hero-panel {
+  display: grid !important;
+  place-items: center !important;
+}
+
+#hero .lanzah-hero-content,
+.lanzah-hero .lanzah-hero-content {
+  left: auto !important;
+  right: auto !important;
+  transform: none !important;
+  justify-self: center !important;
+  place-self: center !important;
+  width: min(94vw, 1040px) !important;
+  max-width: min(94vw, 1040px) !important;
+}
+
+#hero .hero-title,
+#hero .hero-subtitle,
+.lanzah-hero .hero-title,
+.lanzah-hero .hero-subtitle {
+  text-align: center !important;
+  text-wrap: balance;
 }

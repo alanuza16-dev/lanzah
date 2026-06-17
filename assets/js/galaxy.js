@@ -7,7 +7,7 @@
     const canvas=document.getElementById('lanzahHeroCinemaGalaxy');
     if(!canvas) return;
     const ctx=canvas.getContext('2d');
-    let W,H,cx,cy,RX,RY,stars=[],shooting=[],planets=[],belt=[],consts=[],fg=null;
+    let W,H,cx,cy,RX,RY,stars=[],shooting=[],planets=[],belt=[],consts=[],fg=null,comet=null;
     let t=0,tabVisible=true,resizeTimer,grainPat;
     let cam={x:0,y:0},camT={x:0,y:0},isDrag=false,dragP={x:0,y:0},ptId=null;
     const PI2=Math.PI*2,PI=Math.PI,TW=220,TH=110;
@@ -265,6 +265,39 @@
         if(p.ring)drawRing(p,px,py,r,true); // anillo frontal
     }
 
+    const GAL=[[.89,.26,.060,'255,242,220',.6],[.08,.80,.050,'150,200,205',-.8],[.93,.62,.040,'210,220,255',.4]];
+    function drawGalaxies(){
+        GAL.forEach(([bx,by,sz,c,rot])=>{
+            const x=W*bx+cam.x*.04,y=H*by+cam.y*.04,R=W*sz;
+            ctx.save();ctx.translate(x,y);ctx.rotate(rot);ctx.scale(1,.4);
+            const g=ctx.createRadialGradient(0,0,0,0,0,R);
+            g.addColorStop(0,`rgba(${c},.16)`);g.addColorStop(.3,`rgba(${c},.05)`);g.addColorStop(1,'transparent');
+            ctx.fillStyle=g;ctx.beginPath();ctx.arc(0,0,R,0,PI2);ctx.fill();
+            const cg=ctx.createRadialGradient(0,0,0,0,0,R*.20);
+            cg.addColorStop(0,'rgba(255,250,238,.42)');cg.addColorStop(1,'transparent');
+            ctx.fillStyle=cg;ctx.beginPath();ctx.arc(0,0,R*.20,0,PI2);ctx.fill();ctx.restore();
+        });
+    }
+    function tickComet(){
+        if(!comet&&Math.random()<.0016){const ed=Math.random()<.5;
+            comet={x:ed?-50:W+50,y:rnd(H*.08,H*.55),vx:(ed?1:-1)*rnd(1.6,2.8),vy:rnd(.35,1.1)};}
+        if(!comet)return;
+        comet.x+=comet.vx;comet.y+=comet.vy;
+        if(comet.x<-90||comet.x>W+90||comet.y>H+90){comet=null;return;}
+        const{x,y}=comet,sx=x-cx,sy=y-cy,sm=Math.hypot(sx,sy)||1,ax=sx/sm,ay=sy/sm; // dirección Sol→cometa
+        const L=Math.min(W,H)*.46;
+        ctx.save();ctx.globalCompositeOperation='lighter';
+        const ig=ctx.createLinearGradient(x,y,x+ax*L,y+ay*L); // cola de iones (recta, azulada)
+        ig.addColorStop(0,'rgba(150,220,255,.5)');ig.addColorStop(.5,'rgba(110,180,255,.16)');ig.addColorStop(1,'transparent');
+        ctx.strokeStyle=ig;ctx.lineWidth=2.2;ctx.beginPath();ctx.moveTo(x,y);ctx.lineTo(x+ax*L,y+ay*L);ctx.stroke();
+        const dx2=x+ax*L*.85-comet.vx*22,dy2=y+ay*L*.85-comet.vy*22; // cola de polvo (curvada, cálida)
+        const dg=ctx.createLinearGradient(x,y,dx2,dy2);
+        dg.addColorStop(0,'rgba(255,245,220,.4)');dg.addColorStop(.5,'rgba(255,225,170,.12)');dg.addColorStop(1,'transparent');
+        ctx.strokeStyle=dg;ctx.lineWidth=4.5;ctx.lineCap='round';ctx.beginPath();ctx.moveTo(x,y);ctx.lineTo(dx2,dy2);ctx.stroke();
+        const cm=ctx.createRadialGradient(x,y,0,x,y,9);
+        cm.addColorStop(0,'rgba(235,250,255,.95)');cm.addColorStop(.5,'rgba(170,220,255,.4)');cm.addColorStop(1,'transparent');
+        ctx.fillStyle=cm;ctx.beginPath();ctx.arc(x,y,9,0,PI2);ctx.fill();ctx.restore();
+    }
     const AUR=[[.30,.03,.42,.16,'90,180,178',.055],[.66,.01,.36,.13,'72,150,200',.045],
         [.50,.98,.50,.18,'100,161,157',.055],[.20,1.0,.34,.13,'62,140,190',.042],[.82,.99,.30,.12,'90,180,178',.040]];
     function drawAurora(){ctx.save();ctx.globalCompositeOperation='lighter';
@@ -311,6 +344,13 @@
         ctx.save();ctx.globalCompositeOperation='lighter';const la=Math.atan2(uy,ux);
         ctx.strokeStyle='rgba(122,202,196,.5)';ctx.lineWidth=r*.022;
         ctx.beginPath();ctx.arc(px,py,r*.985,la-1.0,la+1.0);ctx.stroke();ctx.restore();
+        const ma=t*.22+1.2,mx=px+Math.cos(ma)*r*1.32,my=py+Math.sin(ma)*r*1.32*.55,mr=r*.07; // luna
+        const mlx=cx-mx,mly=cy-my,mlm=Math.hypot(mlx,mly)||1,mux=mlx/mlm,muy=mly/mlm;
+        ctx.save();ctx.beginPath();ctx.arc(mx,my,mr,0,PI2);ctx.clip();
+        ctx.fillStyle='rgb(152,150,158)';ctx.fillRect(mx-mr,my-mr,mr*2,mr*2);
+        const mns=ctx.createLinearGradient(mx-mux*mr,my-muy*mr,mx+mux*mr,my+muy*mr);
+        mns.addColorStop(0,'rgba(0,0,5,.94)');mns.addColorStop(.55,'rgba(0,0,5,.5)');mns.addColorStop(.82,'transparent');
+        ctx.fillStyle=mns;ctx.fillRect(mx-mr,my-mr,mr*2,mr*2);ctx.restore();
     }
     function tickShootingStars(){
         if(Math.random()<.004&&shooting.length<4) shooting.push({x:rnd(W*.05,W*.75),y:rnd(0,H*.50),vx:rnd(5,13),vy:rnd(.2,2.2),al:1,C:Math.random()<.15?[rnd(180,255),rnd(200,255),rnd(140,200)]:[200,235,255]});
@@ -343,9 +383,9 @@
     function frame(){if(tabVisible){t+=.007;
             if(!isDrag){camT.x+=Math.sin(t*.15)*.12;camT.y+=Math.cos(t*.11)*.08;camT.x*=.984;camT.y*=.984;}
             cam.x+=(camT.x-cam.x)*.07;cam.y+=(camT.y-cam.y)*.07;
-            drawBg();drawNebulae();drawAurora();drawDustLanes();drawGalaxyCore();
+            drawBg();drawNebulae();drawGalaxies();drawAurora();drawDustLanes();drawGalaxyCore();
             updateAndDrawStars();drawConstellations();drawBelt();drawSun();planets.forEach(drawPlanet);
-            drawForegroundPlanet();tickShootingStars();postProcess();}requestAnimationFrame(frame);}
+            tickComet();drawForegroundPlanet();tickShootingStars();postProcess();}requestAnimationFrame(frame);}
     document.addEventListener('visibilitychange',()=>{tabVisible=!document.hidden;});
     window.addEventListener('resize',()=>{clearTimeout(resizeTimer);resizeTimer=setTimeout(resize,150);});resize();requestAnimationFrame(frame);
 }());

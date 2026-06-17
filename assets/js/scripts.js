@@ -511,6 +511,7 @@ function openFacebook() {
     const TAU = Math.PI * 2;
     const clamp = (value, min, max) => Math.max(min, Math.min(max, value));
     const rand = (min, max) => min + Math.random() * (max - min);
+    const rgba = (color, alpha) => `rgba(${color[0]},${color[1]},${color[2]},${alpha})`;
 
     let width = 0;
     let height = 0;
@@ -519,6 +520,8 @@ function openFacebook() {
     let dust = [];
     let time = 0;
     let lastFrame = performance.now();
+    let staticBackdrop = null;
+    let staticBackdropCtx = null;
     let visible = true;
     let resizeTimer = null;
 
@@ -532,14 +535,14 @@ function openFacebook() {
     ];
 
     const planets = [
-        { orbit: 0.16, size: 1.7, speed: 0.18, phase: 0.2, color: [164, 186, 195], glow: [160, 244, 255] },
-        { orbit: 0.23, size: 2.7, speed: 0.145, phase: 1.1, color: [166, 222, 218], glow: [126, 236, 226] },
-        { orbit: 0.31, size: 3.4, speed: 0.118, phase: 2.2, color: [35, 146, 214], glow: [100, 222, 255], moon: true },
-        { orbit: 0.39, size: 2.4, speed: 0.098, phase: 3.2, color: [139, 181, 185], glow: [100, 214, 205] },
-        { orbit: 0.51, size: 7.2, speed: 0.076, phase: 4.0, color: [148, 206, 218], glow: [142, 244, 255], bands: true },
-        { orbit: 0.63, size: 6.5, speed: 0.060, phase: 5.0, color: [184, 224, 214], glow: [148, 244, 230], ring: true },
-        { orbit: 0.75, size: 4.8, speed: 0.048, phase: 5.8, color: [106, 222, 224], glow: [134, 252, 255], ring: true, ringSoft: true },
-        { orbit: 0.86, size: 4.7, speed: 0.038, phase: 0.9, color: [49, 118, 224], glow: [76, 188, 255] }
+        { orbit: 0.16, size: 1.7, speed: 0.070, phase: 0.2, color: [98, 132, 145], glow: [166, 248, 255], shadow: [1, 9, 18], accent: [228, 255, 255], texture: 'rock' },
+        { orbit: 0.23, size: 2.7, speed: 0.058, phase: 1.1, color: [70, 184, 190], glow: [118, 242, 232], shadow: [2, 18, 23], accent: [215, 255, 248], texture: 'ice' },
+        { orbit: 0.31, size: 3.4, speed: 0.050, phase: 2.2, color: [22, 116, 192], glow: [106, 226, 255], shadow: [2, 12, 34], accent: [88, 216, 184], texture: 'terrain', moon: true },
+        { orbit: 0.39, size: 2.4, speed: 0.044, phase: 3.2, color: [128, 92, 78], glow: [238, 148, 116], shadow: [18, 8, 10], accent: [255, 202, 148], texture: 'ember' },
+        { orbit: 0.51, size: 7.2, speed: 0.034, phase: 4.0, color: [122, 186, 206], glow: [150, 244, 255], shadow: [3, 17, 28], accent: [232, 255, 246], texture: 'gas', bands: true },
+        { orbit: 0.63, size: 6.5, speed: 0.028, phase: 5.0, color: [172, 208, 194], glow: [158, 246, 230], shadow: [7, 19, 20], accent: [245, 255, 230], texture: 'gas', ring: true },
+        { orbit: 0.75, size: 4.8, speed: 0.022, phase: 5.8, color: [88, 210, 216], glow: [134, 252, 255], shadow: [2, 18, 34], accent: [226, 255, 255], texture: 'ice', ring: true, ringSoft: true },
+        { orbit: 0.86, size: 4.7, speed: 0.018, phase: 0.9, color: [38, 92, 190], glow: [72, 182, 255], shadow: [1, 7, 28], accent: [158, 226, 255], texture: 'storm' }
     ];
 
     function resize() {
@@ -557,10 +560,11 @@ function openFacebook() {
 
         initStars();
         initDust();
+        buildStaticBackdrop();
     }
 
     function initStars() {
-        const count = width > 1800 ? 2800 : width > 1000 ? 2200 : 1200;
+        const count = width > 1800 ? 1300 : width > 1000 ? 980 : 620;
         const galaxy = getGalaxy();
         const cx = galaxy.x;
         const cy = galaxy.y;
@@ -569,13 +573,13 @@ function openFacebook() {
         stars = [];
 
         for (let i = 0; i < count; i += 1) {
-            const inArm = Math.random() > 0.20;
+            const inArm = Math.random() > 0.28;
             const arm = Math.random() > 0.5 ? 0 : Math.PI;
             const angle = inArm ? rand(0.12, TAU * 1.82) : rand(0, TAU);
-            const spiral = inArm ? 0.50 * Math.exp(0.18 * angle) : Math.pow(Math.random(), 0.58);
+            const spiral = inArm ? 0.45 * Math.exp(0.17 * angle) : Math.pow(Math.random(), 0.58);
             const r = inArm ? radius * 0.14 * spiral : radius * rand(0.10, 1.08);
-            const spread = inArm ? rand(-radius * 0.070, radius * 0.070) : rand(-radius * 0.27, radius * 0.27);
-            const a = inArm ? angle + arm + rand(-0.12, 0.12) : angle;
+            const spread = inArm ? rand(-radius * 0.145, radius * 0.145) : rand(-radius * 0.33, radius * 0.33);
+            const a = inArm ? angle + arm + rand(-0.24, 0.24) : angle;
             const color = starPalettes[Math.floor(Math.random() * starPalettes.length)];
 
             stars.push({
@@ -583,9 +587,10 @@ function openFacebook() {
                 y: cy + (r * 0.42 + spread * 0.35) * Math.sin(a),
                 orbit: r,
                 angle: a,
+                arm: inArm,
                 color,
-                size: inArm ? rand(0.18, 1.35) : rand(0.12, 0.8),
-                alpha: inArm ? rand(0.30, 0.92) : rand(0.07, 0.42),
+                size: inArm ? rand(0.10, 0.76) : rand(0.08, 0.56),
+                alpha: inArm ? rand(0.075, 0.34) : rand(0.045, 0.25),
                 spin: inArm ? rand(0.00008, 0.00018) : rand(0.00003, 0.00008),
                 twinkle: rand(0, TAU),
                 depth: rand(0.10, 1.0),
@@ -599,14 +604,14 @@ function openFacebook() {
         const radius = getGalaxy().radius * 0.96;
 
         for (let arm = 0; arm < 2; arm += 1) {
-            for (let i = 0; i < 90; i += 1) {
+            for (let i = 0; i < 34; i += 1) {
                 const angle = rand(0.35, TAU * 1.65);
                 const r = radius * 0.14 * Math.exp(0.18 * angle);
                 dust.push({
                     angle: angle + arm * Math.PI,
                     orbit: r,
-                    width: rand(22, 68) * dpr,
-                    alpha: rand(0.045, 0.15)
+                    width: rand(32, 104) * dpr,
+                    alpha: rand(0.012, 0.045)
                 });
             }
         }
@@ -617,7 +622,7 @@ function openFacebook() {
         return {
             x: width * 0.50,
             y: mobile ? height * 0.43 : height * 0.455,
-            radius: Math.min(width, height) * (mobile ? 0.56 : 0.62),
+            radius: Math.min(width, height) * (mobile ? 0.56 : 0.70),
             flatness: mobile ? 0.46 : 0.43
         };
     }
@@ -677,11 +682,11 @@ function openFacebook() {
         const base = Math.min(width, height);
         const pulse = 1 + Math.sin(time * 0.55) * 0.030;
         const rings = [
-            [base * 0.62 * pulse, 'rgba(17,90,180,0.10)'],
-            [base * 0.40 * pulse, 'rgba(32,196,220,0.13)'],
-            [base * 0.25 * pulse, 'rgba(105,235,226,0.18)'],
-            [base * 0.125 * pulse, 'rgba(185,255,250,0.34)'],
-            [base * 0.042 * pulse, 'rgba(245,255,255,0.82)']
+            [base * 0.76 * pulse, 'rgba(17,90,180,0.050)'],
+            [base * 0.52 * pulse, 'rgba(32,196,220,0.060)'],
+            [base * 0.33 * pulse, 'rgba(105,235,226,0.070)'],
+            [base * 0.16 * pulse, 'rgba(185,255,250,0.115)'],
+            [base * 0.050 * pulse, 'rgba(245,255,255,0.22)']
         ];
 
         rings.forEach(([radius, color]) => {
@@ -699,9 +704,9 @@ function openFacebook() {
 
         const flare = ctx.createLinearGradient(cx - base * 0.54, cy, cx + base * 0.54, cy);
         flare.addColorStop(0, 'rgba(0,0,0,0)');
-        flare.addColorStop(0.34, 'rgba(65,190,232,0.045)');
-        flare.addColorStop(0.50, 'rgba(215,255,255,0.18)');
-        flare.addColorStop(0.66, 'rgba(65,220,210,0.045)');
+        flare.addColorStop(0.34, 'rgba(65,190,232,0.020)');
+        flare.addColorStop(0.50, 'rgba(215,255,255,0.060)');
+        flare.addColorStop(0.66, 'rgba(65,220,210,0.020)');
         flare.addColorStop(1, 'rgba(0,0,0,0)');
         ctx.save();
         ctx.translate(0, cy);
@@ -725,7 +730,7 @@ function openFacebook() {
 
             ctx.beginPath();
             ctx.ellipse(x, y, lane.width, lane.width * 0.18, angle * 0.35, 0, TAU);
-            ctx.fillStyle = `rgba(0,0,0,${lane.alpha})`;
+            ctx.fillStyle = `rgba(0,10,18,${lane.alpha})`;
             ctx.fill();
         });
         ctx.restore();
@@ -740,12 +745,12 @@ function openFacebook() {
             const angle = star.angle + time * star.spin;
             const x = cx + star.orbit * Math.cos(angle);
             const y = cy + star.orbit * 0.42 * Math.sin(angle);
-            const tw = 0.82 + Math.sin(time * (0.34 + star.depth * 0.35) + star.twinkle) * 0.18;
-            const alpha = clamp(star.alpha * tw, 0, 1);
+            const tw = 0.86 + Math.sin(time * (0.26 + star.depth * 0.24) + star.twinkle) * 0.14;
+            const alpha = clamp(star.alpha * tw * (star.arm ? 0.72 : 1), 0, 1);
 
             if (x < -20 || x > width + 20 || y < -20 || y > height + 20) return;
 
-            if (star.size > 0.8 || star.flare) {
+            if (star.size > 1.05 || star.flare) {
                 const glow = ctx.createRadialGradient(x, y, 0, x, y, star.size * 5.6 * dpr);
                 glow.addColorStop(0, `rgba(${star.color[0]},${star.color[1]},${star.color[2]},${alpha * 0.22})`);
                 glow.addColorStop(1, 'rgba(0,0,0,0)');
@@ -760,6 +765,45 @@ function openFacebook() {
             ctx.arc(x, y, star.size * dpr, 0, TAU);
             ctx.fill();
         });
+    }
+
+    function drawTextSafeVeil() {
+        const base = Math.min(width, height);
+        const veil = ctx.createRadialGradient(width * 0.50, height * 0.49, 0, width * 0.50, height * 0.49, base * 0.68);
+        veil.addColorStop(0, 'rgba(0,10,18,0.30)');
+        veil.addColorStop(0.42, 'rgba(0,8,15,0.18)');
+        veil.addColorStop(0.78, 'rgba(0,4,9,0.06)');
+        veil.addColorStop(1, 'rgba(0,0,0,0)');
+        ctx.fillStyle = veil;
+        ctx.fillRect(0, 0, width, height);
+
+        const cinemaGlass = ctx.createLinearGradient(0, height * 0.22, 0, height * 0.76);
+        cinemaGlass.addColorStop(0, 'rgba(0,0,0,0)');
+        cinemaGlass.addColorStop(0.36, 'rgba(0,8,16,0.14)');
+        cinemaGlass.addColorStop(0.62, 'rgba(0,9,16,0.16)');
+        cinemaGlass.addColorStop(1, 'rgba(0,0,0,0)');
+        ctx.fillStyle = cinemaGlass;
+        ctx.fillRect(0, 0, width, height);
+    }
+
+    function buildStaticBackdrop() {
+        staticBackdrop = document.createElement('canvas');
+        staticBackdrop.width = width;
+        staticBackdrop.height = height;
+        staticBackdropCtx = staticBackdrop.getContext('2d', { alpha: false });
+
+        const previousTime = time;
+        time = previousTime || 0.001;
+
+        drawBackground();
+        drawNebulae();
+        drawCore();
+        drawDust();
+        drawStars(0);
+        drawTextSafeVeil();
+
+        staticBackdropCtx.drawImage(canvas, 0, 0);
+        time = previousTime;
     }
 
     function getSystem() {
@@ -854,50 +898,139 @@ function openFacebook() {
         ctx.save();
         ctx.globalAlpha *= alpha;
 
-        const glow = ctx.createRadialGradient(x, y, radius * 0.35, x, y, radius * 4.8);
-        glow.addColorStop(0, `rgba(${planet.glow[0]},${planet.glow[1]},${planet.glow[2]},0.22)`);
+        const glow = ctx.createRadialGradient(x, y, radius * 0.28, x, y, radius * 5.8);
+        glow.addColorStop(0, rgba(planet.glow, 0.34));
+        glow.addColorStop(0.36, rgba(planet.glow, 0.10));
         glow.addColorStop(1, 'rgba(0,0,0,0)');
         ctx.fillStyle = glow;
         ctx.beginPath();
-        ctx.arc(x, y, radius * 4.8, 0, TAU);
+        ctx.arc(x, y, radius * 5.8, 0, TAU);
         ctx.fill();
 
         if (planet.ring) {
             ctx.save();
             ctx.translate(x, y);
-            ctx.rotate(-0.18);
+            ctx.rotate(-0.20);
             ctx.beginPath();
-            ctx.ellipse(0, 0, radius * 2.2, radius * (planet.ringSoft ? 0.44 : 0.34), 0, 0, TAU);
-            ctx.strokeStyle = planet.ringSoft ? 'rgba(155,248,255,0.22)' : 'rgba(174,248,236,0.30)';
-            ctx.lineWidth = Math.max(1, radius * 0.18);
+            ctx.ellipse(0, 0, radius * 2.36, radius * (planet.ringSoft ? 0.48 : 0.36), 0, 0, TAU);
+            ctx.strokeStyle = planet.ringSoft ? 'rgba(155,248,255,0.20)' : 'rgba(204,255,238,0.30)';
+            ctx.lineWidth = Math.max(1, radius * 0.20);
+            ctx.stroke();
+
+            ctx.beginPath();
+            ctx.ellipse(0, 0, radius * 1.78, radius * (planet.ringSoft ? 0.34 : 0.25), 0, 0, TAU);
+            ctx.strokeStyle = planet.ringSoft ? 'rgba(72,180,230,0.13)' : 'rgba(110,220,205,0.18)';
+            ctx.lineWidth = Math.max(0.8, radius * 0.10);
             ctx.stroke();
             ctx.restore();
         }
 
-        const shade = ctx.createRadialGradient(x + radius * 0.32, y - radius * 0.42, 0, x, y, radius);
-        shade.addColorStop(0, `rgb(${planet.glow[0]},${planet.glow[1]},${planet.glow[2]})`);
-        shade.addColorStop(0.42, `rgb(${planet.color[0]},${planet.color[1]},${planet.color[2]})`);
-        shade.addColorStop(1, 'rgb(2,8,18)');
-        ctx.fillStyle = shade;
+        const surface = ctx.createRadialGradient(x - radius * 0.38, y - radius * 0.42, 0, x, y, radius * 1.12);
+        surface.addColorStop(0, rgba(planet.accent, 1));
+        surface.addColorStop(0.26, rgba(planet.glow, 0.94));
+        surface.addColorStop(0.58, `rgb(${planet.color[0]},${planet.color[1]},${planet.color[2]})`);
+        surface.addColorStop(1, `rgb(${planet.shadow[0]},${planet.shadow[1]},${planet.shadow[2]})`);
+        ctx.fillStyle = surface;
         ctx.beginPath();
         ctx.arc(x, y, radius, 0, TAU);
         ctx.fill();
 
-        if (planet.bands) {
-            ctx.save();
-            ctx.beginPath();
-            ctx.arc(x, y, radius, 0, TAU);
-            ctx.clip();
-            for (let i = -2; i <= 2; i += 1) {
-                ctx.fillStyle = i % 2 === 0 ? 'rgba(220,255,252,0.18)' : 'rgba(18,82,105,0.20)';
-                ctx.fillRect(x - radius, y + i * radius * 0.25, radius * 2, radius * 0.11);
+        ctx.save();
+        ctx.beginPath();
+        ctx.arc(x, y, radius, 0, TAU);
+        ctx.clip();
+
+        if (planet.texture === 'gas') {
+            for (let i = -5; i <= 5; i += 1) {
+                const bandY = y + i * radius * 0.135 + Math.sin(i * 1.9 + planet.phase) * radius * 0.035;
+                const bandH = radius * (0.060 + (Math.abs(i) % 3) * 0.018);
+                ctx.fillStyle = i % 2 === 0 ? rgba(planet.accent, 0.16) : rgba(planet.shadow, 0.20);
+                ctx.beginPath();
+                ctx.ellipse(x, bandY, radius * 1.08, bandH, Math.sin(i + planet.phase) * 0.10, 0, TAU);
+                ctx.fill();
             }
+        } else {
+            for (let i = 0; i < 9; i += 1) {
+                const seed = planet.phase * 37 + i * 12.9898;
+                const px = x + Math.sin(seed) * radius * 0.72;
+                const py = y + Math.cos(seed * 1.31) * radius * 0.58;
+                const pr = radius * (0.11 + (Math.sin(seed * 0.71) + 1) * 0.075);
+                const patch = ctx.createRadialGradient(px, py, 0, px, py, pr);
+                const warmAlpha = planet.texture === 'ember' ? 0.22 : 0.13;
+                patch.addColorStop(0, planet.texture === 'storm' ? rgba(planet.glow, 0.16) : rgba(planet.accent, warmAlpha));
+                patch.addColorStop(1, 'rgba(0,0,0,0)');
+                ctx.fillStyle = patch;
+                ctx.beginPath();
+                ctx.ellipse(px, py, pr * 1.45, pr * 0.72, seed, 0, TAU);
+                ctx.fill();
+            }
+        }
+
+        for (let i = 0; i < 2; i += 1) {
+            ctx.strokeStyle = rgba(planet.glow, 0.07 - i * 0.015);
+            ctx.lineWidth = Math.max(0.5, radius * (0.030 - i * 0.005));
+            ctx.beginPath();
+            ctx.ellipse(x - radius * 0.05, y + radius * (-0.22 + i * 0.18), radius * 0.90, radius * 0.16, -0.18, 0, TAU);
+            ctx.stroke();
+        }
+
+        const terminator = ctx.createLinearGradient(x - radius * 0.78, y - radius * 0.78, x + radius * 0.82, y + radius * 0.86);
+        terminator.addColorStop(0, 'rgba(0,0,0,0)');
+        terminator.addColorStop(0.45, 'rgba(0,0,0,0.08)');
+        terminator.addColorStop(0.78, rgba(planet.shadow, 0.62));
+        terminator.addColorStop(1, rgba(planet.shadow, 0.92));
+        ctx.fillStyle = terminator;
+        ctx.beginPath();
+        ctx.arc(x, y, radius, 0, TAU);
+        ctx.fill();
+
+        const highlight = ctx.createRadialGradient(x - radius * 0.42, y - radius * 0.42, 0, x - radius * 0.42, y - radius * 0.42, radius * 0.54);
+        highlight.addColorStop(0, 'rgba(255,255,255,0.22)');
+        highlight.addColorStop(0.32, rgba(planet.accent, 0.13));
+        highlight.addColorStop(1, 'rgba(255,255,255,0)');
+        ctx.fillStyle = highlight;
+        ctx.beginPath();
+        ctx.arc(x, y, radius, 0, TAU);
+        ctx.fill();
+
+        ctx.restore();
+
+        const rim = ctx.createRadialGradient(x, y, radius * 0.76, x, y, radius * 1.08);
+        rim.addColorStop(0, 'rgba(0,0,0,0)');
+        rim.addColorStop(0.72, rgba(planet.glow, 0.13));
+        rim.addColorStop(1, rgba(planet.accent, 0.30));
+        ctx.fillStyle = rim;
+        ctx.beginPath();
+        ctx.arc(x, y, radius * 1.08, 0, TAU);
+        ctx.fill();
+
+        ctx.strokeStyle = rgba(planet.glow, 0.28);
+        ctx.lineWidth = Math.max(0.7, radius * 0.035);
+        ctx.beginPath();
+        ctx.arc(x, y, radius, -2.65, 0.76);
+        ctx.stroke();
+
+        if (planet.ring) {
+            ctx.save();
+            ctx.translate(x, y);
+            ctx.rotate(-0.20);
+            ctx.beginPath();
+            ctx.ellipse(0, 0, radius * 2.36, radius * (planet.ringSoft ? 0.48 : 0.36), 0, 0, Math.PI);
+            ctx.strokeStyle = planet.ringSoft ? 'rgba(198,255,255,0.24)' : 'rgba(226,255,238,0.34)';
+            ctx.lineWidth = Math.max(1, radius * 0.17);
+            ctx.stroke();
+
+            ctx.beginPath();
+            ctx.ellipse(0, 0, radius * 1.78, radius * (planet.ringSoft ? 0.34 : 0.25), 0, 0, Math.PI);
+            ctx.strokeStyle = 'rgba(90,220,220,0.14)';
+            ctx.lineWidth = Math.max(0.7, radius * 0.08);
+            ctx.stroke();
             ctx.restore();
         }
 
         if (planet.moon) {
             const moonAngle = time * 0.55;
-            ctx.fillStyle = 'rgba(225,245,248,0.78)';
+            ctx.fillStyle = 'rgba(225,245,248,0.82)';
             ctx.beginPath();
             ctx.arc(x + Math.cos(moonAngle) * radius * 1.8, y + Math.sin(moonAngle) * radius * 0.72, Math.max(1, radius * 0.15), 0, TAU);
             ctx.fill();
@@ -911,29 +1044,29 @@ function openFacebook() {
         const base = Math.min(width, height);
         const sunX = width * 0.50;
         const sunY = height * (mobile ? 0.73 : 0.70);
-        const sunR = base * (mobile ? 0.034 : 0.044) * (1 + Math.sin(time * 0.24) * 0.035);
+        const sunR = base * (mobile ? 0.038 : 0.048) * (1 + Math.sin(time * 0.24) * 0.035);
         const layout = mobile ? [
-            [0.43, 0.77, 0.009, 5, 5],
-            [0.58, 0.73, 0.013, 7, 4],
-            [0.30, 0.55, 0.024, 6, 4],
-            [0.73, 0.58, 0.011, 7, 5],
-            [0.68, 0.82, 0.029, 5, 4],
-            [0.33, 0.83, 0.030, 6, 4],
-            [0.78, 0.70, 0.017, 7, 5],
-            [0.22, 0.70, 0.016, 6, 5]
+            [0.43, 0.77, 0.011, 5, 5],
+            [0.58, 0.73, 0.016, 7, 4],
+            [0.29, 0.55, 0.030, 6, 4],
+            [0.74, 0.58, 0.015, 7, 5],
+            [0.68, 0.82, 0.036, 5, 4],
+            [0.32, 0.83, 0.038, 6, 4],
+            [0.79, 0.70, 0.023, 7, 5],
+            [0.20, 0.70, 0.022, 6, 5]
         ] : [
-            [0.50, 0.66, 0.008, 10, 5],
-            [0.59, 0.64, 0.012, 12, 6],
-            [0.31, 0.30, 0.030, 8, 5],
-            [0.78, 0.49, 0.012, 14, 6],
-            [0.82, 0.26, 0.042, 9, 6],
-            [0.21, 0.29, 0.036, 11, 5],
-            [0.68, 0.76, 0.018, 12, 5],
-            [0.40, 0.77, 0.016, 10, 6]
+            [0.50, 0.66, 0.011, 10, 5],
+            [0.60, 0.63, 0.016, 12, 6],
+            [0.30, 0.28, 0.040, 8, 5],
+            [0.97, 0.43, 0.026, 14, 6],
+            [0.83, 0.22, 0.056, 9, 6],
+            [0.20, 0.28, 0.050, 11, 5],
+            [0.70, 0.76, 0.030, 12, 5],
+            [0.40, 0.77, 0.022, 10, 6]
         ];
 
         ctx.save();
-        ctx.globalAlpha = mobile ? 0.56 : 0.60;
+        ctx.globalAlpha = mobile ? 0.68 : 0.74;
 
         const sunGlow = ctx.createRadialGradient(sunX, sunY, 0, sunX, sunY, sunR * 8.5);
         sunGlow.addColorStop(0, 'rgba(236,255,255,0.78)');
@@ -955,7 +1088,7 @@ function openFacebook() {
             const x = width * xRatio + Math.cos(phase) * driftX * dpr;
             const y = height * yRatio + Math.sin(phase * 0.9) * driftY * dpr;
             const radius = Math.max(1.6 * dpr, base * sizeRatio);
-            drawScenePlanet(planet, x, y, radius, index > 3 ? 0.68 : 0.78);
+            drawScenePlanet(planet, x, y, radius, index > 3 ? 0.78 : 0.88);
         });
         ctx.restore();
     }
@@ -985,11 +1118,16 @@ function openFacebook() {
         if (visible) {
             time = now * 0.001;
 
-            drawBackground();
-            drawNebulae();
-            drawCore();
-            drawDust();
-            drawStars(delta);
+            if (staticBackdrop) {
+                ctx.drawImage(staticBackdrop, 0, 0);
+            } else {
+                drawBackground();
+                drawNebulae();
+                drawCore();
+                drawDust();
+                drawStars(delta);
+                drawTextSafeVeil();
+            }
             drawSolarSystem();
             drawLetterboxBlend();
         }

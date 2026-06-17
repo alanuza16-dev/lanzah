@@ -176,7 +176,9 @@ function abrirModal(id) {
     const modal = document.getElementById(id);
     if (!modal) return;
     _modalOpener = document.activeElement;
-    modal.style.display = "block";
+    modal.style.display = "flex";
+    modal.classList.remove('modal--closing');
+    modal.classList.add('modal--open');
     modal.setAttribute('aria-hidden', 'false');
     const closeBtn = modal.querySelector('.close');
     if (closeBtn) closeBtn.focus();
@@ -186,19 +188,25 @@ function abrirModal(id) {
 function cerrarModal(id) {
     const modal = document.getElementById(id);
     if (!modal) return;
-    modal.style.display = "none";
+    modal.classList.remove('modal--open');
+    modal.classList.add('modal--closing');
     modal.setAttribute('aria-hidden', 'true');
     _releaseFocus(modal);
     if (_modalOpener && typeof _modalOpener.focus === 'function') {
         _modalOpener.focus();
         _modalOpener = null;
     }
+    modal.addEventListener('animationend', function handler() {
+        modal.style.display = 'none';
+        modal.classList.remove('modal--closing');
+        modal.removeEventListener('animationend', handler);
+    });
 }
 
 document.addEventListener('keydown', (e) => {
     if (e.key !== 'Escape') return;
     document.querySelectorAll('.modal').forEach(modal => {
-        if (modal.style.display === 'block') cerrarModal(modal.id);
+        if (modal.style.display === 'flex') cerrarModal(modal.id);
     });
 });
 

@@ -14595,3 +14595,248 @@ button.btn-primary:focus-visible {
   text-align: center !important;
   text-wrap: balance;
 }
+
+/* ==========================================================
+   GRADIENTE UNIFICADO — fondo continuo sin cuadros de grises
+   ========================================================== */
+body {
+  background: linear-gradient(
+    180deg,
+    #000000 0%,
+    #05050d 14%,
+    #090915 28%,
+    #0b0b1a 42%,
+    #080810 60%,
+    #040408 80%,
+    #000000 100%
+  ) fixed !important;
+}
+
+.about-section      { background: transparent !important; }
+.projects-section   { background: transparent !important; }
+.catalogo           { background: transparent !important; }
+.contact-section    { background: transparent !important; }
+.footer-custom      { background: transparent !important; }
+
+.contact-section[class*="contact-variant-"]::before {
+  background: transparent !important;
+}
+
+/* Mejora el subrayado del título de sección — usa el teal de marca */
+.contact-title::after {
+  background: linear-gradient(90deg, transparent, #64a19d, transparent) !important;
+  width: 80px !important;
+  height: 2px !important;
+  opacity: 0.7;
+}
+
+/* ==========================================================
+   SERVICE CARDS — diseño glass moderno
+   ========================================================== */
+.item.svc-card {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.07);
+  border-radius: 18px;
+  padding: 28px 22px 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 14px;
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.35s ease, box-shadow 0.35s ease, border-color 0.35s ease, background 0.35s ease;
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  cursor: pointer;
+}
+
+.item.svc-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(ellipse at 50% -10%, rgba(100,161,157,0.14) 0%, transparent 68%);
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.item.svc-card:hover::before { opacity: 1; }
+
+.item.svc-card:hover {
+  transform: translateY(-8px);
+  background: rgba(255,255,255,0.05);
+  box-shadow: 0 24px 52px rgba(0,0,0,0.5), 0 0 0 1px rgba(100,161,157,0.26);
+  border-color: rgba(100,161,157,0.28);
+}
+
+.svc-card__icon {
+  width: 62px;
+  height: 62px;
+  border-radius: 14px;
+  background: rgba(100,161,157,0.10);
+  border: 1px solid rgba(100,161,157,0.20);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.55rem;
+  color: #64a19d;
+  flex-shrink: 0;
+  position: relative;
+  z-index: 1;
+  transition: background 0.3s ease, transform 0.3s ease;
+}
+
+.item.svc-card:hover .svc-card__icon {
+  background: rgba(100,161,157,0.18);
+  transform: scale(1.08);
+}
+
+.svc-card__img {
+  position: relative;
+  width: 100%;
+  border-radius: 10px;
+  overflow: hidden;
+  z-index: 1;
+}
+
+.svc-card__img img {
+  width: 100%;
+  height: 190px;
+  object-fit: cover;
+  border-radius: 10px;
+  display: block;
+}
+
+.svc-card .overlay {
+  height: 190px;
+  border-radius: 10px;
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%;
+}
+
+.svc-card__title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #fff;
+  letter-spacing: 0.4px;
+  margin: 0;
+  position: relative;
+  z-index: 1;
+}
+
+.svc-card__desc {
+  font-size: 0.88rem;
+  color: rgba(255,255,255,0.50);
+  line-height: 1.68;
+  margin: 0;
+  position: relative;
+  z-index: 1;
+}
+
+.svc-card__cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.80rem;
+  color: #64a19d;
+  font-weight: 600;
+  letter-spacing: 0.7px;
+  text-transform: uppercase;
+  margin-top: auto;
+  padding-top: 4px;
+  opacity: 0.60;
+  transition: opacity 0.25s ease, gap 0.25s ease;
+  position: relative;
+  z-index: 1;
+}
+
+.item.svc-card:hover .svc-card__cta { opacity: 1; gap: 10px; }
+
+/* Focus ring para tarjetas modernizadas */
+.item.svc-card:focus-visible {
+  outline: 3px solid #64a19d;
+  outline-offset: 4px;
+  border-radius: 18px;
+}
+
+/* ==========================================================
+   MODAL OSCURO — coherente con el diseño general
+   ========================================================== */
+.modal-content {
+  background: linear-gradient(160deg, #111118 0%, #0a0a12 100%) !important;
+  color: #e4e4f0 !important;
+  border: 1px solid rgba(255,255,255,0.09) !important;
+  box-shadow: 0 32px 80px rgba(0,0,0,0.72), 0 0 0 1px rgba(100,161,157,0.08) !important;
+}
+
+.modal-content h2 {
+  color: #ffffff !important;
+  font-size: 1.55rem;
+  margin-bottom: 16px;
+}
+
+.modal-content p {
+  color: rgba(255,255,255,0.68) !important;
+  line-height: 1.75;
+}
+
+button.close {
+  background: rgba(255,255,255,0.08) !important;
+  color: rgba(255,255,255,0.75) !important;
+  border: 1px solid rgba(255,255,255,0.10) !important;
+}
+
+button.close:hover {
+  background: rgba(100,161,157,0.22) !important;
+  color: #fff !important;
+}
+
+/* ==========================================================
+   SECCIÓN ABOUT — modernización sutil
+   ========================================================== */
+.about-section {
+  padding-top: 8rem;
+  padding-bottom: 2rem;
+}
+
+.about-section h2.contact-title {
+  margin-bottom: 1.2rem;
+}
+
+.about-section .text-white-50 {
+  color: rgba(255,255,255,0.58) !important;
+  line-height: 1.85;
+  font-size: 1.05rem;
+}
+
+/* ==========================================================
+   FOOTER — borde superior sutil con teal
+   ========================================================== */
+.footer-custom {
+  border-top: 1px solid rgba(100,161,157,0.12) !important;
+}
+
+/* ==========================================================
+   SEPARADOR ENTRE SECCIONES — línea decorativa invisible
+   ========================================================== */
+.about-section,
+.projects-section,
+.contact-section {
+  position: relative;
+}
+
+.about-section::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(100,161,157,0.15), transparent);
+  pointer-events: none;
+}

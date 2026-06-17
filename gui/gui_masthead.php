@@ -4,6 +4,7 @@ global $site;
 
 <header class="masthead lanzah-hero" id="page-top">
     <div class="lanzah-hero-stage" id="lanzahHero">
+        <canvas id="lanzahHeroCinemaGalaxy" aria-hidden="true"></canvas>
         <article class="lanzah-hero-panel is-active" data-delay="5000">
             <div class="lanzah-panel-shade"></div>
             <div class="lanzah-hero-content">

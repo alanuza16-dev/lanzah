@@ -499,3 +499,420 @@ function openFacebook() {
     document.addEventListener('visibilitychange',()=>{tabVisible=!document.hidden;});
     window.addEventListener('resize',()=>{clearTimeout(resizeTimer);resizeTimer=setTimeout(resize,150);}); resize(); requestAnimationFrame(frame);
 }());
+
+/* =========================================
+   LANZAH HERO CINEMA GALAXY
+   ========================================= */
+(function initHeroCinemaGalaxy() {
+    const canvas = document.getElementById('lanzahHeroCinemaGalaxy');
+    if (!canvas) return;
+
+    const ctx = canvas.getContext('2d', { alpha: false });
+    const TAU = Math.PI * 2;
+    const clamp = (value, min, max) => Math.max(min, Math.min(max, value));
+    const rand = (min, max) => min + Math.random() * (max - min);
+
+    let width = 0;
+    let height = 0;
+    let dpr = 1;
+    let stars = [];
+    let dust = [];
+    let time = 0;
+    let lastFrame = performance.now();
+    let visible = true;
+    let resizeTimer = null;
+    let pointer = { x: 0, y: 0, tx: 0, ty: 0 };
+
+    const starPalettes = [
+        [255, 248, 220],
+        [180, 210, 255],
+        [95, 205, 255],
+        [235, 242, 255],
+        [255, 214, 154],
+        [120, 232, 255]
+    ];
+
+    const planets = [
+        { name: 'Mercurio', orbit: 0.18, size: 2.0, speed: 0.88, phase: 0.2, color: [174, 164, 145], glow: [240, 225, 190] },
+        { name: 'Venus', orbit: 0.24, size: 3.2, speed: 0.68, phase: 1.1, color: [220, 173, 105], glow: [255, 220, 150] },
+        { name: 'Tierra', orbit: 0.31, size: 3.6, speed: 0.54, phase: 2.2, color: [42, 132, 210], glow: [90, 210, 255], moon: true },
+        { name: 'Marte', orbit: 0.38, size: 2.8, speed: 0.44, phase: 3.2, color: [205, 87, 58], glow: [255, 132, 95] },
+        { name: 'J\u00fapiter', orbit: 0.50, size: 8.1, speed: 0.30, phase: 4.0, color: [211, 166, 112], glow: [255, 228, 175], bands: true },
+        { name: 'Saturno', orbit: 0.62, size: 7.1, speed: 0.23, phase: 5.0, color: [214, 188, 128], glow: [255, 238, 180], ring: true },
+        { name: 'Urano', orbit: 0.74, size: 5.1, speed: 0.18, phase: 5.8, color: [128, 218, 225], glow: [155, 248, 255], ring: true, ringSoft: true },
+        { name: 'Neptuno', orbit: 0.85, size: 5.0, speed: 0.14, phase: 0.9, color: [54, 102, 226], glow: [88, 170, 255] }
+    ];
+
+    function resize() {
+        const parent = canvas.parentElement;
+        const rect = parent.getBoundingClientRect();
+
+        dpr = Math.min(window.devicePixelRatio || 1, 2);
+        width = Math.max(320, Math.floor(rect.width * dpr));
+        height = Math.max(420, Math.floor(rect.height * dpr));
+
+        canvas.width = width;
+        canvas.height = height;
+        canvas.style.width = `${Math.floor(width / dpr)}px`;
+        canvas.style.height = `${Math.floor(height / dpr)}px`;
+
+        initStars();
+        initDust();
+    }
+
+    function initStars() {
+        const count = width > 1800 ? 6200 : width > 1000 ? 4400 : 2600;
+        const cx = width * 0.48;
+        const cy = height * 0.46;
+        const radius = Math.min(width, height) * 0.52;
+
+        stars = [];
+
+        for (let i = 0; i < count; i += 1) {
+            const inArm = Math.random() > 0.30;
+            const arm = Math.random() > 0.5 ? 0 : Math.PI;
+            const angle = inArm ? rand(0.25, TAU * 1.85) : rand(0, TAU);
+            const spiral = inArm ? 0.62 * Math.exp(0.18 * angle) : Math.pow(Math.random(), 0.6);
+            const r = inArm ? radius * 0.14 * spiral : radius * rand(0.12, 1.08);
+            const spread = inArm ? rand(-radius * 0.065, radius * 0.065) : rand(-radius * 0.28, radius * 0.28);
+            const a = inArm ? angle + arm + rand(-0.12, 0.12) : angle;
+            const color = starPalettes[Math.floor(Math.random() * starPalettes.length)];
+
+            stars.push({
+                x: cx + (r + spread) * Math.cos(a),
+                y: cy + (r * 0.42 + spread * 0.35) * Math.sin(a),
+                orbit: r,
+                angle: a,
+                color,
+                size: inArm ? rand(0.18, 1.35) : rand(0.12, 0.8),
+                alpha: inArm ? rand(0.35, 0.95) : rand(0.08, 0.45),
+                spin: inArm ? rand(0.0012, 0.004) : rand(0.0002, 0.001),
+                twinkle: rand(0, TAU),
+                depth: rand(0.10, 1.0),
+                flare: Math.random() > 0.985
+            });
+        }
+    }
+
+    function initDust() {
+        dust = [];
+        const radius = Math.min(width, height) * 0.50;
+
+        for (let arm = 0; arm < 2; arm += 1) {
+            for (let i = 0; i < 140; i += 1) {
+                const angle = rand(0.35, TAU * 1.65);
+                const r = radius * 0.14 * Math.exp(0.18 * angle);
+                dust.push({
+                    angle: angle + arm * Math.PI,
+                    orbit: r,
+                    width: rand(18, 54) * dpr,
+                    alpha: rand(0.035, 0.11)
+                });
+            }
+        }
+    }
+
+    function drawBackground() {
+        const bg = ctx.createLinearGradient(0, 0, width, height);
+        bg.addColorStop(0, '#02030a');
+        bg.addColorStop(0.28, '#030714');
+        bg.addColorStop(0.58, '#01030a');
+        bg.addColorStop(1, '#000106');
+        ctx.fillStyle = bg;
+        ctx.fillRect(0, 0, width, height);
+
+        const topFade = ctx.createLinearGradient(0, 0, 0, height);
+        topFade.addColorStop(0, 'rgba(0,0,0,0.62)');
+        topFade.addColorStop(0.18, 'rgba(0,0,0,0.05)');
+        topFade.addColorStop(0.72, 'rgba(0,0,0,0.04)');
+        topFade.addColorStop(1, 'rgba(0,0,0,0.72)');
+        ctx.fillStyle = topFade;
+        ctx.fillRect(0, 0, width, height);
+    }
+
+    function drawNebulae() {
+        const driftX = pointer.x * 0.35 + Math.sin(time * 0.035) * width * 0.018;
+        const driftY = pointer.y * 0.25 + Math.cos(time * 0.030) * height * 0.016;
+        const layers = [
+            [0.44, 0.44, 0.44, '25,145,225', 0.10],
+            [0.56, 0.48, 0.34, '0,205,240', 0.08],
+            [0.34, 0.56, 0.28, '95,125,255', 0.06],
+            [0.66, 0.36, 0.22, '255,198,110', 0.045],
+            [0.72, 0.62, 0.24, '0,105,190', 0.055]
+        ];
+
+        layers.forEach(([x, y, radius, color, alpha]) => {
+            const gx = width * x + driftX;
+            const gy = height * y + driftY;
+            const gradient = ctx.createRadialGradient(gx, gy, 0, gx, gy, Math.min(width, height) * radius);
+            gradient.addColorStop(0, `rgba(${color},${alpha})`);
+            gradient.addColorStop(0.42, `rgba(${color},${alpha * 0.22})`);
+            gradient.addColorStop(1, 'rgba(0,0,0,0)');
+            ctx.fillStyle = gradient;
+            ctx.fillRect(0, 0, width, height);
+        });
+    }
+
+    function drawCore() {
+        const cx = width * 0.48 + pointer.x * 0.16;
+        const cy = height * 0.46 + pointer.y * 0.12;
+        const base = Math.min(width, height);
+        const pulse = 1 + Math.sin(time * 0.55) * 0.025;
+        const rings = [
+            [base * 0.55 * pulse, 'rgba(20,80,175,0.08)'],
+            [base * 0.34 * pulse, 'rgba(0,190,255,0.10)'],
+            [base * 0.22 * pulse, 'rgba(255,205,105,0.18)'],
+            [base * 0.115 * pulse, 'rgba(255,238,170,0.34)'],
+            [base * 0.040 * pulse, 'rgba(255,255,230,0.82)']
+        ];
+
+        rings.forEach(([radius, color]) => {
+            const gradient = ctx.createRadialGradient(cx, cy, 0, cx, cy, radius);
+            gradient.addColorStop(0, color);
+            gradient.addColorStop(1, 'rgba(0,0,0,0)');
+            ctx.save();
+            ctx.scale(1, 0.45);
+            ctx.fillStyle = gradient;
+            ctx.beginPath();
+            ctx.arc(cx, cy / 0.45, radius, 0, TAU);
+            ctx.fill();
+            ctx.restore();
+        });
+    }
+
+    function drawDust() {
+        const cx = width * 0.48 + pointer.x * 0.25;
+        const cy = height * 0.46 + pointer.y * 0.20;
+        const rotate = time * 0.016;
+
+        ctx.save();
+        dust.forEach((lane) => {
+            const angle = lane.angle + rotate;
+            const x = cx + lane.orbit * Math.cos(angle);
+            const y = cy + lane.orbit * 0.42 * Math.sin(angle);
+
+            ctx.beginPath();
+            ctx.ellipse(x, y, lane.width, lane.width * 0.18, angle * 0.35, 0, TAU);
+            ctx.fillStyle = `rgba(0,0,0,${lane.alpha})`;
+            ctx.fill();
+        });
+        ctx.restore();
+    }
+
+    function drawStars(delta) {
+        const cx = width * 0.48 + pointer.x * 0.22;
+        const cy = height * 0.46 + pointer.y * 0.18;
+
+        stars.forEach((star) => {
+            star.twinkle += delta * (0.6 + star.depth);
+            const angle = star.angle + time * star.spin;
+            const x = cx + star.orbit * Math.cos(angle) + pointer.x * star.depth * 0.18;
+            const y = cy + star.orbit * 0.42 * Math.sin(angle) + pointer.y * star.depth * 0.12;
+            const tw = 0.72 + Math.sin(star.twinkle) * 0.28;
+            const alpha = clamp(star.alpha * tw, 0, 1);
+
+            if (x < -20 || x > width + 20 || y < -20 || y > height + 20) return;
+
+            if (star.size > 0.8 || star.flare) {
+                const glow = ctx.createRadialGradient(x, y, 0, x, y, star.size * 5.6 * dpr);
+                glow.addColorStop(0, `rgba(${star.color[0]},${star.color[1]},${star.color[2]},${alpha * 0.22})`);
+                glow.addColorStop(1, 'rgba(0,0,0,0)');
+                ctx.fillStyle = glow;
+                ctx.beginPath();
+                ctx.arc(x, y, star.size * 5.6 * dpr, 0, TAU);
+                ctx.fill();
+            }
+
+            ctx.fillStyle = `rgba(${star.color[0]},${star.color[1]},${star.color[2]},${alpha})`;
+            ctx.beginPath();
+            ctx.arc(x, y, star.size * dpr, 0, TAU);
+            ctx.fill();
+        });
+    }
+
+    function getSystem() {
+        const mobile = width / dpr < 720;
+        const scale = Math.min(width, height);
+        return {
+            x: mobile ? width * 0.50 : width * 0.72,
+            y: mobile ? height * 0.72 : height * 0.58,
+            radius: mobile ? scale * 0.31 : scale * 0.34,
+            yScale: mobile ? 0.34 : 0.42
+        };
+    }
+
+    function drawOrbitArc(system, planet, angle) {
+        const rx = system.radius * planet.orbit;
+        const ry = rx * system.yScale;
+
+        ctx.save();
+        ctx.translate(system.x, system.y);
+        ctx.beginPath();
+        ctx.ellipse(0, 0, rx, ry, 0, 0, TAU);
+        ctx.strokeStyle = 'rgba(160,220,255,0.075)';
+        ctx.lineWidth = Math.max(0.7, dpr * 0.8);
+        ctx.stroke();
+
+        ctx.beginPath();
+        for (let i = 0; i <= 28; i += 1) {
+            const a = angle - i * 0.045;
+            const x = Math.cos(a) * rx;
+            const y = Math.sin(a) * ry;
+            if (i === 0) ctx.moveTo(x, y);
+            else ctx.lineTo(x, y);
+        }
+        ctx.strokeStyle = 'rgba(100,210,255,0.22)';
+        ctx.lineWidth = Math.max(0.9, planet.size * dpr * 0.08);
+        ctx.stroke();
+        ctx.restore();
+    }
+
+    function drawPlanet(system, planet) {
+        const angle = planet.phase + time * planet.speed;
+        const rx = system.radius * planet.orbit;
+        const ry = rx * system.yScale;
+        const x = system.x + Math.cos(angle) * rx;
+        const y = system.y + Math.sin(angle) * ry;
+        const z = 0.72 + Math.sin(angle) * 0.28;
+        const radius = planet.size * dpr * (0.84 + z * 0.26);
+
+        drawOrbitArc(system, planet, angle);
+
+        const glow = ctx.createRadialGradient(x, y, radius * 0.4, x, y, radius * 4.6);
+        glow.addColorStop(0, `rgba(${planet.glow[0]},${planet.glow[1]},${planet.glow[2]},0.20)`);
+        glow.addColorStop(1, 'rgba(0,0,0,0)');
+        ctx.fillStyle = glow;
+        ctx.beginPath();
+        ctx.arc(x, y, radius * 4.6, 0, TAU);
+        ctx.fill();
+
+        if (planet.ring) {
+            ctx.save();
+            ctx.translate(x, y);
+            ctx.rotate(-0.22);
+            ctx.beginPath();
+            ctx.ellipse(0, 0, radius * 2.15, radius * (planet.ringSoft ? 0.42 : 0.35), 0, 0, TAU);
+            ctx.strokeStyle = planet.ringSoft ? 'rgba(155,248,255,0.30)' : 'rgba(255,232,180,0.48)';
+            ctx.lineWidth = Math.max(1, radius * 0.22);
+            ctx.stroke();
+            ctx.restore();
+        }
+
+        const shade = ctx.createRadialGradient(x + radius * 0.38, y - radius * 0.42, 0, x, y, radius);
+        shade.addColorStop(0, `rgb(${planet.glow[0]},${planet.glow[1]},${planet.glow[2]})`);
+        shade.addColorStop(0.44, `rgb(${planet.color[0]},${planet.color[1]},${planet.color[2]})`);
+        shade.addColorStop(1, 'rgb(5,10,24)');
+        ctx.fillStyle = shade;
+        ctx.beginPath();
+        ctx.arc(x, y, radius, 0, TAU);
+        ctx.fill();
+
+        if (planet.bands) {
+            ctx.save();
+            ctx.beginPath();
+            ctx.arc(x, y, radius, 0, TAU);
+            ctx.clip();
+            for (let i = -2; i <= 2; i += 1) {
+                ctx.fillStyle = i % 2 === 0 ? 'rgba(255,245,215,0.22)' : 'rgba(90,50,30,0.18)';
+                ctx.fillRect(x - radius, y + i * radius * 0.26, radius * 2, radius * 0.14);
+            }
+            ctx.restore();
+        }
+
+        if (planet.moon) {
+            const mx = x + Math.cos(time * 1.6) * radius * 2.0;
+            const my = y + Math.sin(time * 1.6) * radius * 0.85;
+            ctx.fillStyle = 'rgba(225,235,240,0.90)';
+            ctx.beginPath();
+            ctx.arc(mx, my, Math.max(1.1, radius * 0.22), 0, TAU);
+            ctx.fill();
+        }
+
+        if (width / dpr > 760) {
+            ctx.font = `${Math.max(9, 10 * dpr)}px Nunito, sans-serif`;
+            ctx.textAlign = 'center';
+            ctx.fillStyle = 'rgba(235,248,255,0.62)';
+            ctx.fillText(planet.name, x, y + radius + 15 * dpr);
+        }
+    }
+
+    function drawSolarSystem() {
+        const system = getSystem();
+        const sunPulse = 1 + Math.sin(time * 0.9) * 0.06;
+        const sunR = Math.max(7 * dpr, system.radius * 0.035) * sunPulse;
+
+        const sunGlow = ctx.createRadialGradient(system.x, system.y, 0, system.x, system.y, sunR * 7.5);
+        sunGlow.addColorStop(0, 'rgba(255,244,190,0.78)');
+        sunGlow.addColorStop(0.20, 'rgba(255,188,80,0.24)');
+        sunGlow.addColorStop(1, 'rgba(255,120,40,0)');
+        ctx.fillStyle = sunGlow;
+        ctx.beginPath();
+        ctx.arc(system.x, system.y, sunR * 7.5, 0, TAU);
+        ctx.fill();
+
+        ctx.fillStyle = 'rgba(255,245,210,0.95)';
+        ctx.beginPath();
+        ctx.arc(system.x, system.y, sunR, 0, TAU);
+        ctx.fill();
+
+        planets.forEach((planet) => drawPlanet(system, planet));
+    }
+
+    function drawLetterboxBlend() {
+        const edge = ctx.createLinearGradient(0, 0, 0, height);
+        edge.addColorStop(0, 'rgba(0,0,0,0.82)');
+        edge.addColorStop(0.12, 'rgba(0,0,0,0)');
+        edge.addColorStop(0.84, 'rgba(0,0,0,0)');
+        edge.addColorStop(1, 'rgba(0,0,0,0.86)');
+        ctx.fillStyle = edge;
+        ctx.fillRect(0, 0, width, height);
+
+        const side = ctx.createLinearGradient(0, 0, width, 0);
+        side.addColorStop(0, 'rgba(0,0,0,0.54)');
+        side.addColorStop(0.13, 'rgba(0,0,0,0)');
+        side.addColorStop(0.86, 'rgba(0,0,0,0)');
+        side.addColorStop(1, 'rgba(0,0,0,0.54)');
+        ctx.fillStyle = side;
+        ctx.fillRect(0, 0, width, height);
+    }
+
+    function render(now) {
+        const delta = Math.min(0.05, (now - lastFrame) / 1000);
+        lastFrame = now;
+
+        if (visible) {
+            time += delta;
+            pointer.x += (pointer.tx - pointer.x) * 0.045;
+            pointer.y += (pointer.ty - pointer.y) * 0.045;
+
+            drawBackground();
+            drawNebulae();
+            drawCore();
+            drawDust();
+            drawStars(delta);
+            drawSolarSystem();
+            drawLetterboxBlend();
+        }
+
+        requestAnimationFrame(render);
+    }
+
+    window.addEventListener('resize', () => {
+        window.clearTimeout(resizeTimer);
+        resizeTimer = window.setTimeout(resize, 120);
+    });
+
+    window.addEventListener('pointermove', (event) => {
+        const rect = canvas.getBoundingClientRect();
+        pointer.tx = ((event.clientX - rect.left) / rect.width - 0.5) * width * 0.08;
+        pointer.ty = ((event.clientY - rect.top) / rect.height - 0.5) * height * 0.08;
+    }, { passive: true });
+
+    document.addEventListener('visibilitychange', () => {
+        visible = !document.hidden;
+        lastFrame = performance.now();
+    });
+
+    resize();
+    requestAnimationFrame(render);
+}());
